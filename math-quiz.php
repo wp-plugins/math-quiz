@@ -1,0 +1,171 @@
+<?php
+/*
+Plugin Name: Math Quiz
+Plugin URI: http://wordpress.org/extend/plugins/math-quiz/
+Description: Generating random math problem for comment form.
+Version: 0.1
+Author: ATI
+Author URI: http://atifans.net/math-quiz/
+License: GPL2
+*/
+
+//Make sure the plugin is not called outside WP
+if ( !function_exists( 'add_action' ) ) {
+	echo "Hi there!  I'm just a plugin, not much I can do when called directly.";
+	exit;
+}
+
+//Include admin functions.....not ready!
+/*if ( is_admin() )
+	require_once dirname( __FILE__ ) . '/admin.php';*/
+
+//*******************************//
+//*****Initialize the plugin*****//
+//*******************************//
+
+function start_math_engine(){
+
+	if( ! is_admin() ) {
+		// form hook
+		add_action( 'comment_form', 'get_math_problem', 1);
+		// comment-process hook
+		add_filter( 'preprocess_comment', 'check_math_answer', 1 );
+	}
+	//Ajax hook
+	if ( isset($_GET['math_quiz_ajax']) && $_GET['math_quiz_ajax'] == 'get_problem' ) {
+		get_math_problem('ajax');
+		exit();
+	}
+}
+add_action('init', 'start_math_engine');
+
+//***************************************//
+//*****Background handling functions*****//
+//***************************************//
+
+//Random number generator
+function number_engine(){
+	//Math problem generator
+	$firstnum = mt_rand(100, 999);
+	$secondnum = mt_rand(1, 99);
+	$problem = 'Solve the problem: ' . $firstnum . ' - ' . $secondnum . ' = ?';
+	$answer = $firstnum - $secondnum;
+	
+	//Random string generator
+    $characters = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    $fieldname = '';
+	$uniqueid = '';
+    for ($p = 0; $p < 16; $p++) {
+        $fieldname .= $characters[mt_rand(0, strlen($characters)-1)];
+		$uniqueid .= $characters[mt_rand(0, strlen($characters)-1)];
+    }
+	
+	return array($problem, $answer, $fieldname, $uniqueid);
+}
+
+//Get the form format
+function get_problem_form(){
+	$default = '<p id="commentquiz" style="float:left;margin-top:15px"><label for="quiz" style="margin-right: 10px">%question%</label><input id="quiz" name="%fieldname%" type="text"  placeholder="" style="background:#fff;border:none;border-bottom:2px solid #f38630;color:#999;font-family:inherit;font-size:0.9em;padding-bottom:5px;outline:none" /><input type="hidden" name="uniqueid" value="%uniqueid%"/></p>';
+	//htmlspecialchars( $default );
+	return $default;
+}
+	
+//***********************************//
+//*****Action handling functions*****//
+//***********************************//
+
+//Generate math problem for unknown users
+$problem_fired = 0;
+function get_math_problem($mode){
+	// only if this function was called exactly once
+	if($$problem_fired++ > 0)
+		return false;
+		
+	if(!current_user_can('publish_posts')){
+		if( $mode == 'ajax' ){
+			//Start session
+			$siteurl = parse_url( site_url() );
+			session_set_cookie_params(0, $siteurl['path']);
+			session_name('nyan-q');
+			session_start();
+			//Get things from the number engine
+			list($question, $answer, $fieldname, $uniqueid) = number_engine();
+			//Store them into session data
+			$_SESSION[$uniqueid]['answer'] = $answer;
+			$_SESSION[$uniqueid]['fieldname'] = $fieldname;
+		
+			//Filter specific string
+			$fireworks = str_replace( '%question%', $question, get_problem_form() );
+			$fireworks = str_replace( '%uniqueid%', $uniqueid, $fireworks );
+			$fireworks = str_replace( '%fieldname%', $fieldname, $fireworks );
+			
+			echo $fireworks;
+		}else{
+			// enqueue jQuery lib
+			wp_enqueue_script('jquery');
+			// echo ajax script in footer
+			add_action( 'wp_footer', 'get_ajax_script' );
+		}
+	}
+	
+	return true;
+}
+
+//Echo ajax code
+$ajax_fired = 0;
+function get_ajax_script(){
+	// only if this function was called exactly once
+	if( $ajax_fired++ > 0 )
+		return false;
+		
+	$ajax_code = '<script type="text/javascript">jQuery(document).ready(function($){
+		$.ajax({
+			type : "GET",
+			url : "'. site_url() .'/index.php",
+			data : { math_quiz_ajax : "get_problem" },
+			success : function(response){
+				$("#submit").after(response);	
+			}
+		});
+	});
+	</script>';
+	
+	echo $ajax_code;
+	return true;
+}
+
+//Check answers
+function check_math_answer( $commentdata ){
+	//Split post data
+	extract( $commentdata );
+	
+	//Check user identity and comment type
+	if( !current_user_can( 'publish_posts' ) &&
+		$comment_type != 'pingback' &&
+		$comment_type != 'trackback' ) {
+		
+		//Start session
+		$siteurl = parse_url( site_url() );
+		session_set_cookie_params(0, $siteurl['path']);
+		session_name('nyan-q');
+		session_start();
+		
+		//Use the uniqueid to get generated problem
+		$uniqueid = $_POST['uniqueid'];
+		
+		//Die if the problem can't be read from the session data
+		if ( empty( $_SESSION[$uniqueid] ) || empty($_POST[ $_SESSION[$uniqueid]['fieldname'] ]) ){
+			wp_die( __( 'You failed to answer the question. Please try again.', 'mathquiz' ) );
+		}
+		
+		//Check answer
+		if( $_POST[ $_SESSION[$uniqueid]['fieldname'] ] != $_SESSION[$uniqueid]['answer'] )
+			wp_die( __( 'The answer is incorrect.  Please try again.', 'mathquiz' ) );
+		
+		//Problem solved, so destroy the uniqueid	
+		unset($_SESSION[$uniqueid]);
+	}
+	
+	return $commentdata;
+}
+?>
