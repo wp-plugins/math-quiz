@@ -32,9 +32,9 @@ Install this plugin is easy.
 
 == Frequently Asked Questions ==
 
-= Example question here =
+= Why it always tells me that I'm failed to answer the quiz? =
 
-Example answer to that question.
+Client browser must support Cookie and JavaScript because the plugin uses Session to store quiz data and AJAX to insert the quiz form.
 
 == Changelog ==
 
