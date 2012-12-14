@@ -12,7 +12,7 @@ Math Quiz generates dynamic math problem in the comment form to beat spam robots
 
 == Description ==
 
-Math Quiz generates dynamic math problem using dynamic quiz field in the comment form to beat spam robots and provides flexible form customization.
+Math Quiz generates dynamic math problem using dynamic quiz field in the comment form to beat spam robots and provides flexible form style customization.
 
 Some features:
 

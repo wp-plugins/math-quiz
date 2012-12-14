@@ -6,8 +6,11 @@ Description: Generating random math problem for comment form.
 Version: 0.1
 Author: ATI
 Author URI: http://atifans.net/math-quiz/
-License: GPL2
+License: GPL2 or later
 */
+
+//Define constants
+define('SETTING_VERSION', '100');
 
 //Make sure the plugin is not called outside WP
 if ( !function_exists( 'add_action' ) ) {
@@ -15,27 +18,36 @@ if ( !function_exists( 'add_action' ) ) {
 	exit;
 }
 
-//Include admin functions.....not ready!
-/*if ( is_admin() )
-	require_once dirname( __FILE__ ) . '/admin.php';*/
+//Include admin functions
+if ( is_admin() )
+	require_once dirname( __FILE__ ) . '/admin.php';
 
 //*******************************//
 //*****Initialize the plugin*****//
 //*******************************//
-
 function start_math_engine(){
-
+	
+	//Register translation
+	load_plugin_textdomain('math-quiz', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/');
+	
+	//Read plugin setting
+	$quiz_setting = get_option('math-quiz-setting');
+	if ( !isset( $quiz_setting['setting_version'] ) || $quiz_setting['setting_version'] != SETTING_VERSION )
+		reset_setting();
+	
+	//Prepare plugin hooks
 	if( ! is_admin() ) {
+		//Ajax hook
+		if ( isset($_GET['math_quiz_ajax']) && $_GET['math_quiz_ajax'] == 'get_problem' ) {
+			get_math_problem('ajax');
+			exit();
+		}
 		// form hook
 		add_action( 'comment_form', 'get_math_problem', 1);
 		// comment-process hook
 		add_filter( 'preprocess_comment', 'check_math_answer', 1 );
 	}
-	//Ajax hook
-	if ( isset($_GET['math_quiz_ajax']) && $_GET['math_quiz_ajax'] == 'get_problem' ) {
-		get_math_problem('ajax');
-		exit();
-	}
+	
 }
 add_action('init', 'start_math_engine');
 
@@ -44,15 +56,26 @@ add_action('init', 'start_math_engine');
 //***************************************//
 
 //Random number generator
-function number_engine(){
+function number_engine($quiz_type = "subtraction"){
 	//Math problem generator
-	$firstnum = mt_rand(100, 999);
-	$secondnum = mt_rand(1, 99);
-	$problem = 'Solve the problem: ' . $firstnum . ' - ' . $secondnum . ' = ?';
-	$answer = $firstnum - $secondnum;
+	if($quiz_type == "subtraction"){
+	
+		$firstnum = mt_rand(100, 999);
+		$secondnum = mt_rand(1, 99);
+		$problem = __('Solve the problem: ', 'math-quiz') . $firstnum . ' - ' . $secondnum . ' = ?';
+		$answer = $firstnum - $secondnum;
+		
+	}else if($quiz_type == "square-root"){
+	
+		$number = mt_rand(1, 99);
+		$square = pow($number, 2);
+		$problem = __('Solve the problem: ', 'math-quiz') .' &radic;<span style="text-decoration: overline">'. $square .'</span> = ?';
+		$answer = $number;
+		
+	}
 	
 	//Random string generator
-    $characters = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    $characters = "0123456789abcdefghijklmnopqrstuvwxyz";
     $fieldname = '';
 	$uniqueid = '';
     for ($p = 0; $p < 16; $p++) {
@@ -66,10 +89,14 @@ function number_engine(){
 //Get the form format
 function get_problem_form(){
 	$default = '<p id="commentquiz" style="float:left;margin-top:15px"><label for="quiz" style="margin-right: 10px">%question%</label><input id="quiz" name="%fieldname%" type="text"  placeholder="" style="background:#fff;border:none;border-bottom:2px solid #f38630;color:#999;font-family:inherit;font-size:0.9em;padding-bottom:5px;outline:none" /><input type="hidden" name="uniqueid" value="%uniqueid%"/></p>';
-	//htmlspecialchars( $default );
+	
 	return $default;
 }
-	
+
+function reset_setting(){
+
+}
+
 //***********************************//
 //*****Action handling functions*****//
 //***********************************//
@@ -88,8 +115,10 @@ function get_math_problem($mode){
 			session_set_cookie_params(0, $siteurl['path']);
 			session_name('nyan-q');
 			session_start();
+			
 			//Get things from the number engine
 			list($question, $answer, $fieldname, $uniqueid) = number_engine();
+			
 			//Store them into session data
 			$_SESSION[$uniqueid]['answer'] = $answer;
 			$_SESSION[$uniqueid]['fieldname'] = $fieldname;
@@ -117,14 +146,16 @@ function get_ajax_script(){
 	// only if this function was called exactly once
 	if( $ajax_fired++ > 0 )
 		return false;
-		
+	
+	$elementid = "submit";
+	
 	$ajax_code = '<script type="text/javascript">jQuery(document).ready(function($){
 		$.ajax({
 			type : "GET",
 			url : "'. site_url() .'/index.php",
 			data : { math_quiz_ajax : "get_problem" },
 			success : function(response){
-				$("#submit").after(response);	
+				$("#'.$elementid.'").after(response);	
 			}
 		});
 	});
