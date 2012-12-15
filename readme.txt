@@ -1,4 +1,4 @@
-﻿=== Math Quiz ===
+=== Math Quiz ===
 Contributors: atitan
 Donate link: 
 Tags: comments, spam, captcha
