@@ -63,7 +63,7 @@ function math_setting_page(){
 			<tr valign="top">
 				<th scope="row"><label for="quiz-form"><?php _e('Quiz Form', 'math-quiz'); ?></label></th>
 				<td><textarea name="quiz-form" id="quiz-form" cols="60" rows="10"><?php echo $quiz_setting['quiz-form']; ?></textarea>
-				<p class="description"><?php _e('「%problem%, %uniqueid%, %fieldname%」are the preserved strings that should never be removed.', 'math-quiz'); ?></p></td>
+				<p class="description"><?php _e('&#37;problem&#37;, &#37;uniqueid&#37;, &#37;fieldname&#37; are the preserved strings that should never be removed.', 'math-quiz'); ?></p></td>
 			</tr>
 			<tr valign="top">
 				<th scope="row"><label for="quiz-position"><?php _e('Quiz Position', 'math-quiz'); ?></label></th>

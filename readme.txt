@@ -21,7 +21,7 @@ Some features:
 *   Form style and position can be fully customized through control panel.
 *   Currently support subtraction and square root quiz for what you can choose in admin panel.
 
-    Note: if your siteurl and homeurl are in different domain, the plugin may work improperly due to "Cross-origin resource sharing" mechanism.
+    **Note: if your siteurl and homeurl are in different domain, the plugin may work improperly due to "Cross-origin resource sharing" mechanism.**
 
 == Installation ==
 
