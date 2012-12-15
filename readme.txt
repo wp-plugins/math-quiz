@@ -41,6 +41,7 @@ Client browser must support Cookie and JavaScript because the plugin uses Sessio
 
 = 0.2 =
 * Admin panel, Custom quiz form, Problem choices were introduced.
+* zh_TW translation is now available.
 
 = 0.1 =
 * initial release.
@@ -48,7 +49,7 @@ Client browser must support Cookie and JavaScript because the plugin uses Sessio
 == Upgrade Notice ==
 
 = 0.2 =
-new functions were introduced.
+several new functions were introduced.
 
 = 0.1 =
 initial release
