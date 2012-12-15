@@ -3,14 +3,14 @@
 Plugin Name: Math Quiz
 Plugin URI: http://wordpress.org/extend/plugins/math-quiz/
 Description: Generating random math problem for comment form.
-Version: 0.1
+Version: 0.2
 Author: ATI
 Author URI: http://atifans.net/math-quiz/
 License: GPL2 or later
 */
 
 //Define constants
-define('SETTING_VERSION', '100');
+define('SETTING_VERSION', '1.0');
 
 //Make sure the plugin is not called outside WP
 if ( !function_exists( 'add_action' ) ) {
@@ -33,7 +33,7 @@ function start_math_engine(){
 	//Read plugin setting
 	$quiz_setting = get_option('math-quiz-setting');
 	if ( !isset( $quiz_setting['setting_version'] ) || $quiz_setting['setting_version'] != SETTING_VERSION )
-		reset_setting();
+		update_setting();
 	
 	//Prepare plugin hooks
 	if( ! is_admin() ) {
@@ -60,14 +60,14 @@ function number_engine($quiz_type = "subtraction"){
 	//Math problem generator
 	if($quiz_type == "subtraction"){
 	
-		$firstnum = mt_rand(100, 999);
-		$secondnum = mt_rand(1, 99);
+		$firstnum = mt_rand(10, 99);
+		$secondnum = mt_rand(1, $firstnum);
 		$problem = __('Solve the problem: ', 'math-quiz') . $firstnum . ' - ' . $secondnum . ' = ?';
 		$answer = $firstnum - $secondnum;
 		
 	}else if($quiz_type == "square-root"){
 	
-		$number = mt_rand(1, 99);
+		$number = mt_rand(1, 25);
 		$square = pow($number, 2);
 		$problem = __('Solve the problem: ', 'math-quiz') .' &radic;<span style="text-decoration: overline">'. $square .'</span> = ?';
 		$answer = $number;
@@ -86,15 +86,26 @@ function number_engine($quiz_type = "subtraction"){
 	return array($problem, $answer, $fieldname, $uniqueid);
 }
 
-//Get the form format
-function get_problem_form(){
-	$default = '<p id="commentquiz" style="float:left;margin-top:15px"><label for="quiz" style="margin-right: 10px">%question%</label><input id="quiz" name="%fieldname%" type="text"  placeholder="" style="background:#fff;border:none;border-bottom:2px solid #f38630;color:#999;font-family:inherit;font-size:0.9em;padding-bottom:5px;outline:none" /><input type="hidden" name="uniqueid" value="%uniqueid%"/></p>';
+//Update current database data or initialize the setting
+function update_setting(){
+	$init_setting = array(
+		'quiz-type' => 'subtraction',
+		'quiz-form' => '<p id="mathquiz"><label for="mathquiz">%problem%</label><input id="mathquiz" name="%fieldname%" type="text"  placeholder="" /><input type="hidden" name="uniqueid" value="%uniqueid%"/></p>',
+		'quiz-position' => 'submit',
+		'setting_version' => SETTING_VERSION
+	);
 	
-	return $default;
-}
-
-function reset_setting(){
-
+	$quiz_setting = get_option('math-quiz-setting');
+	
+	//If there's a existing setting, merge it.
+	if( isset($quiz_setting['setting_version']) && version_compare( $quiz_setting['setting_version'], SETTING_VERSION, '<' )){
+		$quiz_setting = array_merge( $init_setting, $quiz_setting );
+		$quiz_setting['setting_version'] = SETTING_VERSION;
+		update_option( 'math-quiz-setting', $quiz_setting );
+	}else{
+		add_option( 'math-quiz-setting', $init_setting );
+	}
+	
 }
 
 //***********************************//
@@ -103,7 +114,7 @@ function reset_setting(){
 
 //Generate math problem for unknown users
 $problem_fired = 0;
-function get_math_problem($mode){
+function get_math_problem( $mode ){
 	// only if this function was called exactly once
 	if($$problem_fired++ > 0)
 		return false;
@@ -116,15 +127,18 @@ function get_math_problem($mode){
 			session_name('nyan-q');
 			session_start();
 			
+			//Get quiz setting
+			$quiz_setting = get_option('math-quiz-setting');
+			
 			//Get things from the number engine
-			list($question, $answer, $fieldname, $uniqueid) = number_engine();
+			list($question, $answer, $fieldname, $uniqueid) = number_engine( $quiz_setting['quiz-type'] );
 			
 			//Store them into session data
 			$_SESSION[$uniqueid]['answer'] = $answer;
 			$_SESSION[$uniqueid]['fieldname'] = $fieldname;
 		
 			//Filter specific string
-			$fireworks = str_replace( '%question%', $question, get_problem_form() );
+			$fireworks = str_replace( '%problem%', $question, $quiz_setting['quiz-form'] );
 			$fireworks = str_replace( '%uniqueid%', $uniqueid, $fireworks );
 			$fireworks = str_replace( '%fieldname%', $fieldname, $fireworks );
 			
@@ -147,7 +161,8 @@ function get_ajax_script(){
 	if( $ajax_fired++ > 0 )
 		return false;
 	
-	$elementid = "submit";
+	//Get quiz setting
+	$quiz_setting = get_option('math-quiz-setting');
 	
 	$ajax_code = '<script type="text/javascript">jQuery(document).ready(function($){
 		$.ajax({
@@ -155,7 +170,7 @@ function get_ajax_script(){
 			url : "'. site_url() .'/index.php",
 			data : { math_quiz_ajax : "get_problem" },
 			success : function(response){
-				$("#'.$elementid.'").after(response);	
+				$("#' . $quiz_setting['quiz-position'] . '").after(response);	
 			}
 		});
 	});
