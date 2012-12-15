@@ -5,7 +5,7 @@ Plugin URI: http://wordpress.org/extend/plugins/math-quiz/
 Description: Generating random math problem for comment form.
 Version: 0.2
 Author: ATI
-Author URI: http://atifans.net/math-quiz/
+Author URI: http://atifans.net/
 License: GPL2 or later
 */
 
