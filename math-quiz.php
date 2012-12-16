@@ -3,14 +3,14 @@
 Plugin Name: Math Quiz
 Plugin URI: http://wordpress.org/extend/plugins/math-quiz/
 Description: Generating random math problem for comment form.
-Version: 0.2
+Version: 0.3
 Author: ATI
 Author URI: http://atifans.net/
 License: GPL2 or later
 */
 
 //Define constants
-define('SETTING_VERSION', '1.0');
+define('SETTING_VERSION', '1.1');
 
 //Make sure the plugin is not called outside WP
 if ( !function_exists( 'add_action' ) ) {
@@ -58,9 +58,16 @@ add_action('init', 'start_math_engine');
 //Random number generator
 function number_engine($quiz_type = "subtraction"){
 	//Math problem generator
-	if($quiz_type == "subtraction"){
-	
+	if($quiz_type == "summation"){
+		
 		$firstnum = mt_rand(10, 99);
+		$secondnum = mt_rand(1, 99);
+		$problem = __('Solve the problem: ', 'math-quiz') . $firstnum . ' + ' . $secondnum . ' = ?';
+		$answer = $firstnum + $secondnum;
+		
+	}else if($quiz_type == "subtraction"){
+	
+		$firstnum = mt_rand(10, 200);
 		$secondnum = mt_rand(1, $firstnum);
 		$problem = __('Solve the problem: ', 'math-quiz') . $firstnum . ' - ' . $secondnum . ' = ?';
 		$answer = $firstnum - $secondnum;
@@ -69,8 +76,15 @@ function number_engine($quiz_type = "subtraction"){
 	
 		$number = mt_rand(1, 25);
 		$square = pow($number, 2);
-		$problem = __('Solve the problem: ', 'math-quiz') .' &radic;<span style="text-decoration: overline">'. $square .'</span> = ?';
+		$problem = __('Solve the problem: ', 'math-quiz') .'&radic;<span style="text-decoration: overline">'. $square .'</span> = ?';
 		$answer = $number;
+		
+	}else if($quiz_type == "exponentiation"){
+		
+		$base = mt_rand(1, 10);
+		$power = mt_rand(1, 3);
+		$problem = __('Solve the problem: ', 'math-quiz') . $base . '<sup>' . $power . '</sup> = ?';
+		$answer = pow($base, $power);
 		
 	}
 	
@@ -92,6 +106,7 @@ function update_setting(){
 		'quiz-type' => 'subtraction',
 		'quiz-form' => '<p id="mathquiz"><label for="mathquiz">%problem%</label><input id="mathquiz" name="%fieldname%" type="text"  placeholder="" /><input type="hidden" name="uniqueid" value="%uniqueid%"/></p>',
 		'quiz-position' => 'submit',
+		'quiz-ajax' => 'after',
 		'setting_version' => SETTING_VERSION
 	);
 	
@@ -170,7 +185,7 @@ function get_ajax_script(){
 			url : "'. site_url() .'/index.php",
 			data : { math_quiz_ajax : "get_problem" },
 			success : function(response){
-				$("#' . $quiz_setting['quiz-position'] . '").after(response);	
+				$("#' . $quiz_setting['quiz-position'] . '").' . $quiz_setting['quiz-ajax'] . '(response);	
 			}
 		});
 	});
