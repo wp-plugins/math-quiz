@@ -49,7 +49,7 @@ function math_setting_page(){
 				<td>
 				<select name="quiz-type" id="quiz-type">
 					<?php
-						$quizType = array('summation', 'subtraction', 'square-root', 'exponentiation');
+						$quizType = array('summation', 'subtraction', 'multiplication', 'square-root', 'exponentiation');
 						for($i = 0; $i < count($quizType); $i++){
 							echo '<option value="'. $quizType[$i] .'"';
 							if( $quizType[$i] == $quiz_setting['quiz-type'] ) echo ' selected="selected"';
@@ -67,11 +67,6 @@ function math_setting_page(){
 			</tr>
 			<tr valign="top">
 				<th scope="row"><label for="quiz-position"><?php _e('Quiz Position', 'math-quiz'); ?></label></th>
-				<td><input name="quiz-position" type="text" id="quiz-position" value="<?php echo $quiz_setting['quiz-position']; ?>" class="regular-text" />
-				<p class="description"><?php _e('Please enter the "HTML element id" where you want to insert the quiz form.', 'math-quiz'); ?></p></td>
-			</tr>
-			<tr valign="top">
-				<th scope="row"><label for="quiz-ajax"><?php _e('Quiz Ajax Position', 'math-quiz'); ?></label></th>
 				<td>
 				<select name="quiz-ajax" id="quiz-ajax">
 					<?php
@@ -83,7 +78,9 @@ function math_setting_page(){
 						}
 					?>
 				</select>
-				<p class="description"><?php _e('Insert the form before or after the selected "HTML element id."', 'math-quiz'); ?></p>
+				<?php _e('the HTML element id: ', 'math-quiz'); ?>
+				<input name="quiz-position" type="text" id="quiz-position" value="<?php echo $quiz_setting['quiz-position']; ?>" class="regular-text" placeholder="HTML element id here"/>
+				<p class="description"><?php _e('Please enter the "HTML element id" where you want to insert the quiz form before or after.', 'math-quiz'); ?></p>
 				</td>
 			</tr>
 		</table>
@@ -101,16 +98,15 @@ function save_setting(){
 		$setting_error = '';
 		
 		//Check quiz-type
-		if( $_POST['quiz-type'] == 'summation' ){
-			$quiz_setting['quiz-type'] = 'summation';
-		}else if($_POST['quiz-type'] == 'subtraction'){
-			$quiz_setting['quiz-type'] = 'subtraction';
-		}else if($_POST['quiz-type'] == 'square-root'){
-			$quiz_setting['quiz-type'] = 'square-root';
-		}else if($_POST['quiz-type'] == 'exponentiation'){
-			$quiz_setting['quiz-type'] = 'exponentiation';
+		if( $_POST['quiz-type'] == 'summation' ||
+			$_POST['quiz-type'] == 'subtraction' ||
+			$_POST['quiz-type'] == 'multiplication' ||
+			$_POST['quiz-type'] == 'square-root' ||
+			$_POST['quiz-type'] == 'exponentiation' 
+			){
+			$quiz_setting['quiz-type'] = $_POST['quiz-type'];
 		}else{
-			$setting_error .= 'Quiz Type';
+			$setting_error .= __('Quiz Type', 'math-quiz');
 		}
 		
 		//Check quiz-form
@@ -120,7 +116,7 @@ function save_setting(){
 			$quiz_setting['quiz-form'] = $_POST['quiz-form'];
 		}else{
 			if(strlen($setting_error) > 0) $setting_error .= ', ';
-			$setting_error .= 'Quiz Form';
+			$setting_error .= __('Quiz Form', 'math-quiz');
 		}
 		
 		//Check quiz-position
@@ -128,17 +124,17 @@ function save_setting(){
 			$quiz_setting['quiz-position'] = $_POST['quiz-position'];
 		}else{
 			if(strlen($setting_error) > 0) $setting_error .= ', ';
-			$setting_error .= 'Quiz Position';
+			$setting_error .= __('Quiz Position', 'math-quiz');
 		}
 		
 		//Check quiz-ajax
-		if( $_POST['quiz-ajax'] == 'before' ){
-			$quiz_setting['quiz-ajax'] = 'before';
-		}else if($_POST['quiz-ajax'] == 'after'){
-			$quiz_setting['quiz-ajax'] = 'after';
+		if( $_POST['quiz-ajax'] == 'before' ||
+			$_POST['quiz-ajax'] == 'after'
+			){
+			$quiz_setting['quiz-ajax'] = $_POST['quiz-ajax'];
 		}else{
 			if(strlen($setting_error) > 0) $setting_error .= ', ';
-			$setting_error .= 'Quiz Ajax Position';
+			$setting_error .= __('Quiz Insert Order', 'math-quiz');
 		}
 		
 		update_option( 'math-quiz-setting', stripslashes_deep($quiz_setting) );

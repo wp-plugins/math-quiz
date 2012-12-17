@@ -56,7 +56,7 @@ add_action('init', 'start_math_engine');
 //***************************************//
 
 //Random number generator
-function number_engine($quiz_type = "subtraction"){
+function number_engine($quiz_type = "summation"){
 	//Math problem generator
 	if($quiz_type == "summation"){
 		
@@ -72,6 +72,13 @@ function number_engine($quiz_type = "subtraction"){
 		$problem = __('Solve the problem: ', 'math-quiz') . $firstnum . ' - ' . $secondnum . ' = ?';
 		$answer = $firstnum - $secondnum;
 		
+	}else if($quiz_type == "multiplication"){
+		
+		$firstnum = mt_rand(1, 25);
+		$secondnum = mt_rand(1, 25);
+		$problem = __('Solve the problem: ', 'math-quiz') . $firstnum . ' * ' . $secondnum . ' = ?';
+		$answer = $firstnum * $secondnum;
+	
 	}else if($quiz_type == "square-root"){
 	
 		$number = mt_rand(1, 25);
@@ -81,8 +88,8 @@ function number_engine($quiz_type = "subtraction"){
 		
 	}else if($quiz_type == "exponentiation"){
 		
-		$base = mt_rand(1, 10);
-		$power = mt_rand(1, 3);
+		$base = mt_rand(1, 25);
+		$power = mt_rand(1, 2);
 		$problem = __('Solve the problem: ', 'math-quiz') . $base . '<sup>' . $power . '</sup> = ?';
 		$answer = pow($base, $power);
 		
@@ -103,7 +110,7 @@ function number_engine($quiz_type = "subtraction"){
 //Update current database data or initialize the setting
 function update_setting(){
 	$init_setting = array(
-		'quiz-type' => 'subtraction',
+		'quiz-type' => 'summation',
 		'quiz-form' => '<p id="mathquiz"><label for="mathquiz">%problem%</label><input id="mathquiz" name="%fieldname%" type="text"  placeholder="" /><input type="hidden" name="uniqueid" value="%uniqueid%"/></p>',
 		'quiz-position' => 'submit',
 		'quiz-ajax' => 'after',
