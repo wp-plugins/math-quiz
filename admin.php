@@ -49,11 +49,19 @@ function math_setting_page(){
 				<td>
 				<select name="quiz-type" id="quiz-type">
 					<?php
-						$quizType = array('summation', 'subtraction', 'multiplication', 'square-root', 'exponentiation');
-						for($i = 0; $i < count($quizType); $i++){
-							echo '<option value="'. $quizType[$i] .'"';
-							if( $quizType[$i] == $quiz_setting['quiz-type'] ) echo ' selected="selected"';
-							echo '>'. __($quizType[$i], 'math-quiz') .'</option>';
+						//Use this kind of loop for better gettext compatibility
+						$quizType = array(
+						'summation' => __('summation', 'math-quiz'),
+						'subtraction' => __('subtraction', 'math-quiz'),
+						'multiplication' => __('multiplication', 'math-quiz'),
+						'square-root' => __('square-root', 'math-quiz'),
+						'exponentiation' => __('exponentiation', 'math-quiz')
+						);
+						while( $key = current($quizType) ){
+							echo '<option value="'. key($quizType) .'"';
+							if( key($quizType) == $quiz_setting['quiz-type'] ) echo ' selected="selected"';
+							echo '>'. $key .'</option>';
+							next($quizType);
 						}
 					?>
 				</select>
@@ -70,11 +78,15 @@ function math_setting_page(){
 				<td>
 				<select name="quiz-ajax" id="quiz-ajax">
 					<?php
-						$quizAjax = array('before', 'after');
-						for($i = 0; $i < count($quizAjax); $i++){
-							echo '<option value="'. $quizAjax[$i] .'"';
-							if( $quizAjax[$i] == $quiz_setting['quiz-ajax'] ) echo ' selected="selected"';
-							echo '>'. __($quizAjax[$i], 'math-quiz') .'</option>';
+						$quizAjax = array(
+						'before' => __('before', 'math-quiz'),
+						'after' => __('after', 'math-quiz')
+						);
+						while( $key = current($quizAjax) ){
+							echo '<option value="'. key($quizAjax) .'"';
+							if( key($quizAjax) == $quiz_setting['quiz-ajax'] ) echo ' selected="selected"';
+							echo '>'. $key .'</option>';
+							next($quizAjax);
 						}
 					?>
 				</select>
