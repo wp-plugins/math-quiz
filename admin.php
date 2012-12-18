@@ -51,11 +51,11 @@ function math_setting_page(){
 					<?php
 						//Use this kind of loop for better gettext compatibility
 						$quizType = array(
-						'summation' => __('summation', 'math-quiz'),
-						'subtraction' => __('subtraction', 'math-quiz'),
-						'multiplication' => __('multiplication', 'math-quiz'),
-						'square-root' => __('square-root', 'math-quiz'),
-						'exponentiation' => __('exponentiation', 'math-quiz')
+						'summation' => __('Summation', 'math-quiz'),
+						'subtraction' => __('Subtraction', 'math-quiz'),
+						'multiplication' => __('Multiplication', 'math-quiz'),
+						'square-root' => __('Square root', 'math-quiz'),
+						'exponentiation' => __('Exponentiation', 'math-quiz')
 						);
 						while( $key = current($quizType) ){
 							echo '<option value="'. key($quizType) .'"';
@@ -79,8 +79,8 @@ function math_setting_page(){
 				<select name="quiz-ajax" id="quiz-ajax">
 					<?php
 						$quizAjax = array(
-						'before' => __('before', 'math-quiz'),
-						'after' => __('after', 'math-quiz')
+						'before' => __('Insert before', 'math-quiz'),
+						'after' => __('Insert after', 'math-quiz')
 						);
 						while( $key = current($quizAjax) ){
 							echo '<option value="'. key($quizAjax) .'"';

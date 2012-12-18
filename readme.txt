@@ -4,7 +4,7 @@ Donate link:
 Tags: comments, spam, captcha
 Requires at least: 3.0
 Tested up to: 3.5
-Stable tag: 0.2
+Stable tag: 0.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -19,7 +19,7 @@ Some features:
 *   Dynamic problem and field name prevent spam robots from posting unwanted content.
 *   Quiz form is inserted using AJAX for a better compatibility with HTML cache plugin.
 *   Form style and position can be fully customized through control panel.
-*   Currently support subtraction and square root quiz for what you can choose in admin panel.
+*   Support several types of quiz for what you can choose in admin panel.
 
     **Note: if your siteurl and homeurl are in different domain, the plugin may work improperly due to "Cross-origin resource sharing" mechanism.**
 
@@ -39,17 +39,24 @@ Client browser must support Cookie and JavaScript because the plugin uses Sessio
 
 == Changelog ==
 
+= 0.3 =
+* More quiz types were added.
+* The form could now choose to insert before or after the selected element.
+
 = 0.2 =
 * Admin panel, Custom quiz form, Problem choices were introduced.
 * zh_TW translation is now available.
 
 = 0.1 =
-* initial release.
+* Initial release.
 
 == Upgrade Notice ==
 
+= 0.3 =
+New quiz types are available.
+
 = 0.2 =
-several new functions were introduced.
+Several new functions were introduced.
 
 = 0.1 =
-initial release
+Initial release
