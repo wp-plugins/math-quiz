@@ -65,14 +65,14 @@ function number_engine($quiz_type = "summation"){
 	//Math problem generator
 	if($quiz_type == "summation"){
 		
-		$firstnum = mt_rand(10, 99);
-		$secondnum = mt_rand(1, 99);
+		$firstnum = mt_rand(1, 99);
+		$secondnum = mt_rand(1, 100-$firstnum);
 		$problem = __('Solve the problem: ', 'math-quiz') . $firstnum . ' + ' . $secondnum . ' = ?';
 		$answer = $firstnum + $secondnum;
 		
 	}else if($quiz_type == "subtraction"){
 	
-		$firstnum = mt_rand(10, 200);
+		$firstnum = mt_rand(1, 99);
 		$secondnum = mt_rand(1, $firstnum);
 		$problem = __('Solve the problem: ', 'math-quiz') . $firstnum . ' - ' . $secondnum . ' = ?';
 		$answer = $firstnum - $secondnum;
@@ -138,7 +138,7 @@ function update_setting(){
 
 //Fixed quiz form
 function get_quiz_form(){
-	return '<p id="mathquiz"><label for="mathquiz">%problem%</label><input name="%fieldname%" type="text"  placeholder="" /> <a id="refresh-mathquiz" href="javascript:void(0)">%reloadbutton%</a><input type="hidden" name="uniqueid" value="%uniqueid%"/></p>';
+	return '<p id="mathquiz"><label for="mathquiz">%problem%</label><input name="%fieldname%" type="text" placeholder="" /> <a id="refresh-mathquiz" href="javascript:void(0)">%reloadbutton%</a><input type="hidden" name="uniqueid" value="%uniqueid%"/></p>';
 }
 //***********************************//
 //*****Action handling functions*****//
@@ -163,14 +163,14 @@ function get_math_problem( $mode ){
 			$quiz_setting = get_option('math-quiz-setting');
 			
 			//Get things from the number engine
-			list($question, $answer, $fieldname, $uniqueid) = number_engine( $quiz_setting['quiz-type'] );
+			list($problem, $answer, $fieldname, $uniqueid) = number_engine( $quiz_setting['quiz-type'] );
 			
 			//Store them into session data
 			$_SESSION[$uniqueid]['answer'] = $answer;
 			$_SESSION[$uniqueid]['fieldname'] = $fieldname;
 		
 			//Filter specific string
-			$fireworks = str_replace( '%problem%', $question, get_quiz_form() );
+			$fireworks = str_replace( '%problem%', $problem, get_quiz_form() );
 			$fireworks = str_replace( '%uniqueid%', $uniqueid, $fireworks );
 			$fireworks = str_replace( '%fieldname%', $fieldname, $fireworks );
 			$fireworks = str_replace( '%reloadbutton%', __('Refresh Quiz', 'math-quiz'), $fireworks );
