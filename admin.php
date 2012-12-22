@@ -20,7 +20,9 @@ function math_setting_page(){
 
 	//Get quiz setting
 	$quiz_setting = get_option('math-quiz-setting');
-
+	
+	//Enqueue jQuery
+	wp_enqueue_script('jquery');
 ?>
 <div class="wrap">
 	<h2><?php _e('Math Quiz', 'math-quiz'); ?></h2>
@@ -70,8 +72,31 @@ function math_setting_page(){
 			</tr>
 			<tr valign="top">
 				<th scope="row"><label for="quiz-form"><?php _e('Quiz Form', 'math-quiz'); ?></label></th>
-				<td><textarea name="quiz-form" id="quiz-form" cols="60" rows="10"><?php echo $quiz_setting['quiz-form']; ?></textarea>
-				<p class="description"><?php _e('&#37;problem&#37;, &#37;uniqueid&#37;, &#37;fieldname&#37; are the preserved strings that should never be removed.', 'math-quiz'); ?></p></td>
+				<td>
+				<textarea id="quiz-form" class="code disabled" disabled="disabled" cols="80" rows="5"><?php echo get_quiz_form(); ?></textarea>
+				<p class="description"><?php _e('This is how your quiz form will look like, customize it using CSS!', 'math-quiz'); ?></p>
+				</td>
+			</tr>
+			<tr valign="top">
+				<th scope="row"><label for="quiz-css"><?php _e('Quiz Customization', 'math-quiz'); ?></label></th>
+				<td>
+				<select name="quiz-css" id="quiz-css">
+					<?php
+						$quizCSS = array(
+						'theme' => __('Use theme CSS', 'math-quiz'),
+						'plugin' => __('Customize it here', 'math-quiz')
+						);
+						while( $key = current($quizCSS) ){
+							echo '<option value="'. key($quizCSS) .'"';
+							if( key($quizCSS) == $quiz_setting['quiz-css'] ) echo ' selected="selected"';
+							echo '>'. $key .'</option>';
+							next($quizCSS);
+						}
+					?>
+				</select><br><br>
+				<textarea name="quiz-css-content" id="plugin" class="quiz-css-content code" cols="40" rows="10" <?php if($quiz_setting['quiz-css'] != 'plugin') echo 'style="display:none"'; ?>><?php echo $quiz_setting['quiz-css-content']; ?></textarea>
+				<p class="description"><?php _e('It\'s recommended to use theme CSS.', 'math-quiz'); ?></p>
+				</td>
 			</tr>
 			<tr valign="top">
 				<th scope="row"><label for="quiz-position"><?php _e('Quiz Position', 'math-quiz'); ?></label></th>
@@ -80,6 +105,7 @@ function math_setting_page(){
 					<?php
 						$quizAjax = array(
 						'before' => __('Insert before', 'math-quiz'),
+						'html' => __('Insert into', 'math-quiz'),
 						'after' => __('Insert after', 'math-quiz')
 						);
 						while( $key = current($quizAjax) ){
@@ -92,13 +118,21 @@ function math_setting_page(){
 				</select>
 				<?php _e('the HTML element id: ', 'math-quiz'); ?>
 				<input name="quiz-position" type="text" id="quiz-position" value="<?php echo $quiz_setting['quiz-position']; ?>" class="regular-text" placeholder="HTML element id here"/>
-				<p class="description"><?php _e('Please enter the "HTML element id" where you want to insert the quiz form before or after.', 'math-quiz'); ?></p>
+				<p class="description"><?php _e('Please enter the "HTML element id" where you want to insert the quiz form, and choose a insert method.', 'math-quiz'); ?></p>
 				</td>
 			</tr>
 		</table>
 		<p class="submit"><input type="submit" name="submit" id="submit" class="button button-primary" value="<?php _e('Save Changes', 'math-quiz'); ?>"  /></p>
 	</form>
 </div>
+<script type="text/javascript">
+$(function() {
+    $('#quiz-css').change(function(){
+        $('.quiz-css-content').hide();
+        $('#' + $(this).val()).show();
+    });
+});
+</script>
 <?php
 } //math_setting_page ends here
 
@@ -121,14 +155,15 @@ function save_setting(){
 			$setting_error .= __('Quiz Type', 'math-quiz');
 		}
 		
-		//Check quiz-form
-		if( substr_count($_POST['quiz-form'], '%problem%') == 1 && 
-			substr_count($_POST['quiz-form'], '%uniqueid%') == 1	&&
-			substr_count($_POST['quiz-form'], '%fieldname%') == 1 ){
-			$quiz_setting['quiz-form'] = $_POST['quiz-form'];
+		//Check quiz-css
+		if( $_POST['quiz-css'] == 'theme' ){
+			$quiz_setting['quiz-css'] = 'theme';
+		}else if( $_POST['quiz-css'] == 'plugin' ){
+			$quiz_setting['quiz-css'] = 'plugin';
+			$quiz_setting['quiz-css-content'] = $_POST['quiz-css-content'];
 		}else{
 			if(strlen($setting_error) > 0) $setting_error .= ', ';
-			$setting_error .= __('Quiz Form', 'math-quiz');
+			$setting_error .= __('Quiz Customization', 'math-quiz');
 		}
 		
 		//Check quiz-position
@@ -146,7 +181,7 @@ function save_setting(){
 			$quiz_setting['quiz-ajax'] = $_POST['quiz-ajax'];
 		}else{
 			if(strlen($setting_error) > 0) $setting_error .= ', ';
-			$setting_error .= __('Quiz Insert Order', 'math-quiz');
+			$setting_error .= __('Quiz Insert Method', 'math-quiz');
 		}
 		
 		update_option( 'math-quiz-setting', stripslashes_deep($quiz_setting) );

@@ -4,7 +4,7 @@ Donate link:
 Tags: comments, spam, captcha
 Requires at least: 3.0
 Tested up to: 3.5
-Stable tag: 0.3
+Stable tag: 0.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -39,6 +39,11 @@ Client browser must support Cookie and JavaScript because the plugin uses Sessio
 
 == Changelog ==
 
+= 0.4 =
+* Users can now refresh the quiz themselves.
+* User defined quiz form was deprecated, use CSS for customization instead.
+* Added new form insert method.
+
 = 0.3 =
 * More quiz types were added.
 * The form could now choose to insert before or after the selected element.
@@ -51,6 +56,9 @@ Client browser must support Cookie and JavaScript because the plugin uses Sessio
 * Initial release.
 
 == Upgrade Notice ==
+
+= 0.4 =
+User defined quiz form deprecated.
 
 = 0.3 =
 New quiz types are available.

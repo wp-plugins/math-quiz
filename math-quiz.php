@@ -3,14 +3,14 @@
 Plugin Name: Math Quiz
 Plugin URI: http://wordpress.org/extend/plugins/math-quiz/
 Description: Generating random math problem for comment form.
-Version: 0.3
+Version: 0.4
 Author: ATI
 Author URI: http://atifans.net/
 License: GPL2 or later
 */
 
 //Define constants
-define('SETTING_VERSION', '1.1');
+define('SETTING_VERSION', '1.3');
 
 //Make sure the plugin is not called outside WP
 if ( !function_exists( 'add_action' ) ) {
@@ -42,6 +42,11 @@ function start_math_engine(){
 			get_math_problem('ajax');
 			exit();
 		}
+		// enqueue jQuery lib
+		wp_enqueue_script('jquery');
+		// echo customized style sheet
+		if( $quiz_setting['quiz-css'] == 'plugin' )
+			add_action( 'wp_head', 'get_style_sheet' );
 		// form hook
 		add_action( 'comment_form', 'get_math_problem', 1);
 		// comment-process hook
@@ -111,7 +116,8 @@ function number_engine($quiz_type = "summation"){
 function update_setting(){
 	$init_setting = array(
 		'quiz-type' => 'summation',
-		'quiz-form' => '<p id="mathquiz"><label for="mathquiz">%problem%</label><input id="mathquiz" name="%fieldname%" type="text"  placeholder="" /><input type="hidden" name="uniqueid" value="%uniqueid%"/></p>',
+		'quiz-css' => 'theme',
+		'quiz-css-content' => '',
 		'quiz-position' => 'submit',
 		'quiz-ajax' => 'after',
 		'setting_version' => SETTING_VERSION
@@ -130,6 +136,10 @@ function update_setting(){
 	
 }
 
+//Fixed quiz form
+function get_quiz_form(){
+	return '<p id="mathquiz"><label for="mathquiz">%problem%</label><input name="%fieldname%" type="text"  placeholder="" /> <a id="refresh-mathquiz" href="javascript:void(0)">%reloadbutton%</a><input type="hidden" name="uniqueid" value="%uniqueid%"/></p>';
+}
 //***********************************//
 //*****Action handling functions*****//
 //***********************************//
@@ -160,14 +170,13 @@ function get_math_problem( $mode ){
 			$_SESSION[$uniqueid]['fieldname'] = $fieldname;
 		
 			//Filter specific string
-			$fireworks = str_replace( '%problem%', $question, $quiz_setting['quiz-form'] );
+			$fireworks = str_replace( '%problem%', $question, get_quiz_form() );
 			$fireworks = str_replace( '%uniqueid%', $uniqueid, $fireworks );
 			$fireworks = str_replace( '%fieldname%', $fieldname, $fireworks );
+			$fireworks = str_replace( '%reloadbutton%', __('Refresh Quiz', 'math-quiz'), $fireworks );
 			
 			echo $fireworks;
 		}else{
-			// enqueue jQuery lib
-			wp_enqueue_script('jquery');
 			// echo ajax script in footer
 			add_action( 'wp_footer', 'get_ajax_script' );
 		}
@@ -186,19 +195,53 @@ function get_ajax_script(){
 	//Get quiz setting
 	$quiz_setting = get_option('math-quiz-setting');
 	
-	$ajax_code = '<script type="text/javascript">jQuery(document).ready(function($){
-		$.ajax({
-			type : "GET",
-			url : "'. site_url() .'/index.php",
-			data : { math_quiz_ajax : "get_problem" },
-			success : function(response){
-				$("#' . $quiz_setting['quiz-position'] . '").' . $quiz_setting['quiz-ajax'] . '(response);	
-			}
-		});
+	$ajax_code = '<script type="text/javascript">
+	(function($){
+	var MathQuizCall = function(){
+			$.ajax({
+				type : "GET",
+				url : "'. site_url() .'/index.php",
+				data : { math_quiz_ajax : "get_problem" },
+				success : function(response){
+					$("#' . $quiz_setting['quiz-position'] . '").' . $quiz_setting['quiz-ajax'] . '(response);	
+				}
+			});
+		};
+	var MathQuizRefresh = function(){
+			$.ajax({
+				type : "GET",
+				url : "'. site_url() .'/index.php",
+				data : { math_quiz_ajax : "get_problem" },
+				success : function(response){
+					$("#mathquiz").replaceWith(response);	
+				}
+			});
+		};
+		
+	jQuery(document).ready(function() {
+		MathQuizCall();
+		$("body").on("click", "#refresh-mathquiz", MathQuizRefresh);
 	});
+	})(jQuery);
 	</script>';
 	
 	echo $ajax_code;
+	return true;
+}
+
+//Echo style sheet
+$style_fired = 0;
+function get_style_sheet(){
+	// only if this function was called exactly once
+	if( $style_fired++ > 0 )
+		return false;
+	
+	//Get quiz setting
+	$quiz_setting = get_option('math-quiz-setting');
+	
+	$style = '<style type="text/css">' . $quiz_setting['quiz-css-content'] . '</style>';
+	
+	echo $style;
 	return true;
 }
 
