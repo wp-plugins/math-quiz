@@ -4,7 +4,7 @@ Donate link:
 Tags: comments, spam, captcha
 Requires at least: 3.0
 Tested up to: 3.5
-Stable tag: 0.4
+Stable tag: 0.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -39,6 +39,9 @@ Client browser must support Cookie and JavaScript because the plugin uses Sessio
 
 == Changelog ==
 
+= 0.5 =
+* Fix compatibility with built-in theme, such as twentyeleven.
+
 = 0.4 =
 * Users can now refresh the quiz themselves.
 * User defined quiz form was deprecated, use CSS for customization instead.
@@ -56,6 +59,9 @@ Client browser must support Cookie and JavaScript because the plugin uses Sessio
 * Initial release.
 
 == Upgrade Notice ==
+
+= 0.5 =
+Fix compatibility with built-in theme, such as twentyeleven.
 
 = 0.4 =
 User defined quiz form deprecated.

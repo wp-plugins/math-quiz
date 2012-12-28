@@ -3,14 +3,14 @@
 Plugin Name: Math Quiz
 Plugin URI: http://wordpress.org/extend/plugins/math-quiz/
 Description: Generating random math problem for comment form.
-Version: 0.4
+Version: 0.5
 Author: ATI
 Author URI: http://atifans.net/
 License: GPL2 or later
 */
 
 //Define constants
-define('SETTING_VERSION', '1.3');
+define('SETTING_VERSION', '2.0');
 
 //Make sure the plugin is not called outside WP
 if ( !function_exists( 'add_action' ) ) {
@@ -118,6 +118,7 @@ function update_setting(){
 		'quiz-type' => 'summation',
 		'quiz-css' => 'theme',
 		'quiz-css-content' => '',
+		'quiz-position-selector' => 'default',
 		'quiz-position' => 'submit',
 		'quiz-ajax' => 'after',
 		'setting_version' => SETTING_VERSION
@@ -195,6 +196,13 @@ function get_ajax_script(){
 	//Get quiz setting
 	$quiz_setting = get_option('math-quiz-setting');
 	
+	//Check setting
+	if( $quiz_setting['quiz-position-selector'] == 'custom'){
+		$selector = '$("#' . $quiz_setting['quiz-position'] . '").' . $quiz_setting['quiz-ajax'] . '(response);';	
+	}else{
+		$selector = '$("input").parent(".form-submit").before(response);';	
+	}
+	
 	$ajax_code = '<script type="text/javascript">
 	(function($){
 	var MathQuizCall = function(){
@@ -202,9 +210,7 @@ function get_ajax_script(){
 				type : "GET",
 				url : "'. site_url() .'/index.php",
 				data : { math_quiz_ajax : "get_problem" },
-				success : function(response){
-					$("#' . $quiz_setting['quiz-position'] . '").' . $quiz_setting['quiz-ajax'] . '(response);	
-				}
+				success : function(response){'. $selector .'}
 			});
 		};
 	var MathQuizRefresh = function(){

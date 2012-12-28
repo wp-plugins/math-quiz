@@ -101,6 +101,21 @@ function math_setting_page(){
 			<tr valign="top">
 				<th scope="row"><label for="quiz-position"><?php _e('Quiz Position', 'math-quiz'); ?></label></th>
 				<td>
+				<select name="quiz-position-selector" id="quiz-position-selector">
+					<?php
+						$quizPOS = array(
+						'default' => __('Use default position', 'math-quiz'),
+						'custom' => __('Customize it yourself', 'math-quiz')
+						);
+						while( $key = current($quizPOS) ){
+							echo '<option value="'. key($quizPOS) .'"';
+							if( key($quizPOS) == $quiz_setting['quiz-position-selector'] ) echo ' selected="selected"';
+							echo '>'. $key .'</option>';
+							next($quizPOS);
+						}
+					?>
+				</select><br><br>
+				<div id="custom" class="custom-position" <?php if($quiz_setting['quiz-position-selector'] != 'custom') echo 'style="display:none"'; ?>>
 				<select name="quiz-ajax" id="quiz-ajax">
 					<?php
 						$quizAjax = array(
@@ -119,6 +134,7 @@ function math_setting_page(){
 				<?php _e('the HTML element id: ', 'math-quiz'); ?>
 				<input name="quiz-position" type="text" id="quiz-position" value="<?php echo $quiz_setting['quiz-position']; ?>" class="regular-text" placeholder="HTML element id here"/>
 				<p class="description"><?php _e('Please enter the "HTML element id" where you want to insert the quiz form, and choose a insert method.', 'math-quiz'); ?></p>
+				</div>
 				</td>
 			</tr>
 		</table>
@@ -129,6 +145,10 @@ function math_setting_page(){
 $(function() {
     $('#quiz-css').change(function(){
         $('.quiz-css-content').hide();
+        $('#' + $(this).val()).show();
+    });
+	$('#quiz-position-selector').change(function(){
+        $('.custom-position').hide();
         $('#' + $(this).val()).show();
     });
 });
@@ -164,6 +184,16 @@ function save_setting(){
 		}else{
 			if(strlen($setting_error) > 0) $setting_error .= ', ';
 			$setting_error .= __('Quiz Customization', 'math-quiz');
+		}
+		
+		//Check quiz-position-selector
+		if( $_POST['quiz-position-selector'] == 'default' ||
+			$_POST['quiz-position-selector'] == 'custom' 
+			){
+			$quiz_setting['quiz-position-selector'] = $_POST['quiz-position-selector'];
+		}else{
+			if(strlen($setting_error) > 0) $setting_error .= ', ';
+			$setting_error .= __('Quiz Position Type Selector', 'math-quiz');
 		}
 		
 		//Check quiz-position
