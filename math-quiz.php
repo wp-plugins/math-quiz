@@ -200,7 +200,7 @@ function get_ajax_script(){
 	if( $quiz_setting['quiz-position-selector'] == 'custom'){
 		$selector = '$("#' . $quiz_setting['quiz-position'] . '").' . $quiz_setting['quiz-ajax'] . '(response);';	
 	}else{
-		$selector = '$("input").parent(".form-submit").before(response);';	
+		$selector = '$("#submit").parent().before(response);';	
 	}
 	
 	$ajax_code = '<script type="text/javascript">
@@ -271,9 +271,8 @@ function check_math_answer( $commentdata ){
 		$uniqueid = $_POST['uniqueid'];
 		
 		//Die if the problem can't be read from the session data
-		if ( empty( $_SESSION[$uniqueid] ) || empty($_POST[ $_SESSION[$uniqueid]['fieldname'] ]) ){
+		if ( empty( $_SESSION[$uniqueid] ) || empty($_POST[ $_SESSION[$uniqueid]['fieldname'] ]) )
 			wp_die( __( 'You failed to answer the question. Please try again.', 'mathquiz' ) );
-		}
 		
 		//Check answer
 		if( $_POST[ $_SESSION[$uniqueid]['fieldname'] ] != $_SESSION[$uniqueid]['answer'] )
