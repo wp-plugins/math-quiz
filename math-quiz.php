@@ -104,7 +104,7 @@ function number_engine($quiz_type = "summation"){
     $characters = "0123456789abcdefghijklmnopqrstuvwxyz";
     $fieldname = '';
 	$uniqueid = '';
-    for ($p = 0; $p < 16; $p++) {
+    for ($p = 0; $p < 32; $p++) {
         $fieldname .= $characters[mt_rand(0, strlen($characters)-1)];
 		$uniqueid .= $characters[mt_rand(0, strlen($characters)-1)];
     }
