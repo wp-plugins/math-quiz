@@ -1,4 +1,4 @@
-=== Math Quiz ===
+﻿=== Math Quiz ===
 Contributors: atitan
 Donate link: 
 Tags: comments, spam, captcha
@@ -12,16 +12,22 @@ Math Quiz generates dynamic math problem in the comment form to beat spam robots
 
 == Description ==
 
-Math Quiz generates dynamic math problem using dynamic quiz field in the comment form to beat spam robots and provides flexible form style customization.
+Math Quiz generates dynamic math problem in the comment form to beat spam robots and provides flexible form style customization.
 
-Some features:
+    **Note: if your siteurl and homeurl are in different domain, the plugin may not work properly due to "Cross-origin resource sharing" mechanism.**
 
-*   Dynamic problem and field name prevent spam robots from posting unwanted content.
+Features:
+
+*   Dynamic problem and form field name prevent spam robots from posting unwanted content.
 *   Quiz form is inserted using AJAX for a better compatibility with HTML cache plugin.
 *   Form style and position can be fully customized through control panel.
-*   Support several types of quiz for what you can choose in admin panel.
+*   Support several types of quiz for what you can choose in admin panel (will be removed in the next release).
 
-    **Note: if your siteurl and homeurl are in different domain, the plugin may work improperly due to "Cross-origin resource sharing" mechanism.**
+Future changes:
+
+*   Use pictured math problem to avoid HTML parsers.
+*   Replace dynamic form field name with a fixed one.
+*   Do AJAX answer check before submitting the form.
 
 == Installation ==
 
