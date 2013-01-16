@@ -1,4 +1,4 @@
-﻿=== Math Quiz ===
+=== Math Quiz ===
 Contributors: atitan
 Donate link: 
 Tags: comments, spam, captcha
@@ -29,6 +29,8 @@ Future changes:
 *   Replace dynamic form field name with a fixed one.
 *   Do AJAX answer check before submitting the form.
 
+
+囧
 == Installation ==
 
 Install this plugin is easy.
