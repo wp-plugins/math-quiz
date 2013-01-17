@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: math-quiz\n"
-"POT-Creation-Date: 2012-12-28 23:09+0800\n"
-"PO-Revision-Date: 2012-12-28 23:10+0800\n"
+"POT-Creation-Date: 2013-01-12 18:58+0800\n"
+"PO-Revision-Date: 2013-01-12 18:58+0800\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -134,12 +134,13 @@ msgid "Refresh Quiz"
 msgstr "換個問題"
 
 #: C:\math-quiz\trunk/math-quiz.php:275
-msgid "You failed to answer the question. Please try again."
-msgstr "無法驗證你的答案，請重試。"
+msgid ""
+"You failed to answer the question. Please go back and try another problem."
+msgstr "無法驗證你的答案，請換個題目再重試。"
 
-#: C:\math-quiz\trunk/math-quiz.php:280
-msgid "The answer is incorrect.  Please try again."
-msgstr "答案不正確，請重試。"
+#: C:\math-quiz\trunk/math-quiz.php:281
+msgid "The answer is incorrect.  Please go back and try another problem."
+msgstr "答案不正確，請換個題目再重試。"
 
 #~ msgid ""
 #~ "&#37;problem&#37;, &#37;uniqueid&#37;, &#37;fieldname&#37; are the "

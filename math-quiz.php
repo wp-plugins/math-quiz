@@ -139,7 +139,7 @@ function update_setting(){
 
 //Fixed quiz form
 function get_quiz_form(){
-	return '<p id="mathquiz"><label for="mathquiz">%problem%</label><input name="%fieldname%" type="text" placeholder="" /> <a id="refresh-mathquiz" href="javascript:void(0)">%reloadbutton%</a><input type="hidden" name="uniqueid" value="%uniqueid%"/></p>';
+	return '<p id="mathquiz"><label>%problem%</label><input name="%fieldname%" type="text" /><a id="refresh-mathquiz" href="javascript:void(0)">%reloadbutton%</a><input type="hidden" name="uniqueid" value="%uniqueid%" /></p>';
 }
 //***********************************//
 //*****Action handling functions*****//
@@ -203,7 +203,8 @@ function get_ajax_script(){
 		$selector = '$("#submit").parent().before(response);';	
 	}
 	
-	$ajax_code = '<script type="text/javascript">
+	$ajax_code = 
+'<script type="text/javascript">
 	(function($){
 	var MathQuizCall = function(){
 			$.ajax({
@@ -229,7 +230,7 @@ function get_ajax_script(){
 		$("body").on("click", "#refresh-mathquiz", MathQuizRefresh);
 	});
 	})(jQuery);
-	</script>';
+</script>';
 	
 	echo $ajax_code;
 	return true;
@@ -271,12 +272,15 @@ function check_math_answer( $commentdata ){
 		$uniqueid = $_POST['uniqueid'];
 		
 		//Die if the problem can't be read from the session data
-		if ( empty( $_SESSION[$uniqueid] ) || empty($_POST[ $_SESSION[$uniqueid]['fieldname'] ]) )
-			wp_die( __( 'You failed to answer the question. Please try again.', 'mathquiz' ) );
+		if ( empty( $_SESSION[$uniqueid] ) || empty($_POST[ $_SESSION[$uniqueid]['fieldname'] ]) ) {
+			wp_die( __( 'You failed to answer the question. Please go back and try another problem.', 'mathquiz' ) );
+		}
 		
 		//Check answer
-		if( $_POST[ $_SESSION[$uniqueid]['fieldname'] ] != $_SESSION[$uniqueid]['answer'] )
-			wp_die( __( 'The answer is incorrect.  Please try again.', 'mathquiz' ) );
+		if( $_POST[ $_SESSION[$uniqueid]['fieldname'] ] != $_SESSION[$uniqueid]['answer'] ) {
+			unset($_SESSION[$uniqueid]);
+			wp_die( __( 'The answer is incorrect.  Please go back and try another problem.', 'mathquiz' ) );
+		}
 		
 		//Problem solved, so destroy the uniqueid	
 		unset($_SESSION[$uniqueid]);
