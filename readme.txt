@@ -14,8 +14,6 @@ Math Quiz generates dynamic math problem in the comment form to beat spam robots
 
 Math Quiz generates dynamic math problem in the comment form to beat spam robots and provides flexible form style customization.
 
-    **Note: if your siteurl and homeurl are in different domain, the plugin may not work properly due to "Cross-origin resource sharing" mechanism.**
-
 Features:
 
 *   Dynamic problem and form field name prevent spam robots from posting unwanted content.
@@ -23,11 +21,13 @@ Features:
 *   Form style and position can be fully customized through control panel.
 *   Support several types of quiz for what you can choose in admin panel (will be removed in the next release).
 
-Future changes:
+Functions to add:
 
 *   Use pictured math problem to avoid HTML parsers.
 *   Replace dynamic form field name with a fixed one.
 *   Do AJAX answer check before submitting the form.
+
+    **Note: if your siteurl and homeurl are in different domain, the plugin may not work properly due to "Cross-origin resource sharing" mechanism.**
 
 == Installation ==
 
