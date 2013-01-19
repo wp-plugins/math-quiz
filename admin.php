@@ -47,30 +47,6 @@ function math_setting_page(){
 	<?php wp_nonce_field( 'math-quiz-control-panel' ); ?>
 		<table class="form-table">
 			<tr valign="top">
-				<th scope="row"><label for="quiz-type"><?php _e('Quiz Type', 'math-quiz'); ?></label></th>
-				<td>
-				<select name="quiz-type" id="quiz-type">
-					<?php
-						//Use this kind of loop for better gettext compatibility
-						$quizType = array(
-						'summation' => __('Summation', 'math-quiz'),
-						'subtraction' => __('Subtraction', 'math-quiz'),
-						'multiplication' => __('Multiplication', 'math-quiz'),
-						'square-root' => __('Square root', 'math-quiz'),
-						'exponentiation' => __('Exponentiation', 'math-quiz')
-						);
-						while( $key = current($quizType) ){
-							echo '<option value="'. key($quizType) .'"';
-							if( key($quizType) == $quiz_setting['quiz-type'] ) echo ' selected="selected"';
-							echo '>'. $key .'</option>';
-							next($quizType);
-						}
-					?>
-				</select>
-				<p class="description"><?php _e('Choose your favorite quiz type!', 'math-quiz'); ?></p>
-				</td>
-			</tr>
-			<tr valign="top">
 				<th scope="row"><label for="quiz-form"><?php _e('Quiz Form', 'math-quiz'); ?></label></th>
 				<td>
 				<textarea id="quiz-form" class="code disabled" disabled="disabled" cols="80" rows="5"><?php echo get_quiz_form(); ?></textarea>
@@ -163,18 +139,6 @@ function save_setting(){
 		
 		$setting_error = '';
 		
-		//Check quiz-type
-		if( $_POST['quiz-type'] == 'summation' ||
-			$_POST['quiz-type'] == 'subtraction' ||
-			$_POST['quiz-type'] == 'multiplication' ||
-			$_POST['quiz-type'] == 'square-root' ||
-			$_POST['quiz-type'] == 'exponentiation' 
-			){
-			$quiz_setting['quiz-type'] = $_POST['quiz-type'];
-		}else{
-			$setting_error .= __('Quiz Type', 'math-quiz');
-		}
-		
 		//Check quiz-css
 		if( $_POST['quiz-css'] == 'theme' ){
 			$quiz_setting['quiz-css'] = 'theme';
@@ -182,7 +146,6 @@ function save_setting(){
 			$quiz_setting['quiz-css'] = 'plugin';
 			$quiz_setting['quiz-css-content'] = $_POST['quiz-css-content'];
 		}else{
-			if(strlen($setting_error) > 0) $setting_error .= ', ';
 			$setting_error .= __('Quiz Customization', 'math-quiz');
 		}
 		

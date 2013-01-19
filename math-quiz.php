@@ -61,61 +61,39 @@ add_action('init', 'start_math_engine');
 //***************************************//
 
 //Random number generator
-function number_engine($quiz_type = "summation"){
-	//Math problem generator
-	if($quiz_type == "summation"){
-		
-		$firstnum = mt_rand(1, 99);
-		$secondnum = mt_rand(1, 100-$firstnum);
-		$problem = __('Solve the problem: ', 'math-quiz') . $firstnum . ' + ' . $secondnum . ' = ?';
-		$answer = $firstnum + $secondnum;
-		
-	}else if($quiz_type == "subtraction"){
-	
-		$firstnum = mt_rand(1, 99);
-		$secondnum = mt_rand(1, $firstnum);
-		$problem = __('Solve the problem: ', 'math-quiz') . $firstnum . ' - ' . $secondnum . ' = ?';
-		$answer = $firstnum - $secondnum;
-		
-	}else if($quiz_type == "multiplication"){
-		
-		$firstnum = mt_rand(1, 25);
-		$secondnum = mt_rand(1, 25);
-		$problem = __('Solve the problem: ', 'math-quiz') . $firstnum . ' * ' . $secondnum . ' = ?';
-		$answer = $firstnum * $secondnum;
-	
-	}else if($quiz_type == "square-root"){
-	
-		$number = mt_rand(1, 25);
-		$square = pow($number, 2);
-		$problem = __('Solve the problem: ', 'math-quiz') .'&radic;<span style="text-decoration: overline">'. $square .'</span> = ?';
-		$answer = $number;
-		
-	}else if($quiz_type == "exponentiation"){
-		
-		$base = mt_rand(1, 25);
-		$power = mt_rand(1, 2);
-		$problem = __('Solve the problem: ', 'math-quiz') . $base . '<sup>' . $power . '</sup> = ?';
-		$answer = pow($base, $power);
-		
-	}
-	
+function number_engine(){
 	//Random string generator
     $characters = "0123456789abcdefghijklmnopqrstuvwxyz";
-    $fieldname = '';
 	$uniqueid = '';
     for ($p = 0; $p < 32; $p++) {
-        $fieldname .= $characters[mt_rand(0, strlen($characters)-1)];
 		$uniqueid .= $characters[mt_rand(0, strlen($characters)-1)];
     }
 	
-	return array($problem, $answer, $fieldname, $uniqueid);
+	//Character selector
+	$chars = array('▒', '▨', '◕', '☀', '☃', '☭', '☢', '☯', '♞', '☪', '☨', '✪');
+	$char1 = $char2 = 0;
+	while($char1 == $char2){
+		$char1 = mt_rand(0, count($chars) );
+		$char2 = mt_rand(0, count($chars) );
+	}
+	$char1 = $chars[ $char1 ];
+	$char2 = $chars[ $char2 ];
+	
+	$num1 = mt_rand(0, 10);
+	$num2 = mt_rand(0, 10);
+	$num3 = mt_rand(0, 5);
+	$num4 = mt_rand(0, 5);
+	
+	$problem = $char1.'='.$num1.', '.$char2.'='.$num2.', ⟨'.$char1.'x'.$num3.'⟩+⟨'.$char2.'x'.$num4.'⟩= ?';
+	$problem = pictureGenerator( $problem );
+	$answer = $num1*$num3 + $num2*$num4;
+	
+	return array($problem, $answer, $uniqueid);
 }
 
 //Update current database data or initialize the setting
 function update_setting(){
 	$init_setting = array(
-		'quiz-type' => 'summation',
 		'quiz-css' => 'theme',
 		'quiz-css-content' => '',
 		'quiz-position-selector' => 'default',
@@ -139,8 +117,47 @@ function update_setting(){
 
 //Fixed quiz form
 function get_quiz_form(){
-	return '<p id="mathquiz"><label>%problem%</label><input name="%fieldname%" type="text" /><a id="refresh-mathquiz" href="javascript:void(0)">%reloadbutton%</a><input type="hidden" name="uniqueid" value="%uniqueid%" /></p>';
+	return '<p id="mathquiz"><label for="mathquiz">%problemlabel%<img src="data:image/png;base64,%problem%"></label><input name="math-quiz" type="text" /><a id="refresh-mathquiz" href="javascript:void(0)">%reloadbutton%</a><input type="hidden" name="uniqueid" value="%uniqueid%" /></p>';
 }
+
+//Fire the session
+function prepareSession(){
+	$siteurl = parse_url( site_url() );
+	session_set_cookie_params(0, $siteurl['path']);
+	session_name('nyan-q');
+	session_start();
+}
+
+//Base64 picture generator
+function pictureGenerator( $text ){
+	// Create the image
+	$im = imagecreatetruecolor(200, 14); 
+	
+	// Create some colors
+	$white = imagecolorallocate($im, 255, 255, 255); 
+	$grey = imagecolorallocate($im, 128, 128, 128);
+	$black = imagecolorallocate($im, 0, 0, 0);
+	imagefilledrectangle($im, 0, 0, 199, 13, $white);
+
+	// TrueType Font
+	$font = dirname( __FILE__ ) . '/fonts/unifont.ttf';
+
+	// Add some shadow to the text
+	imagettftext($im, 10, 0, 3, 13, $grey, $font, $text);
+
+	// Add the text
+	imagettftext($im, 10, 0, 2, 12, $black, $font, $text);
+
+	// Use output buffer to store the image for base64 conversion
+	ob_start();
+		imagepng($im);
+		$imagedata = ob_get_contents(); // read from buffer
+		imagedestroy($im);
+	ob_end_clean(); // delete buffer
+	
+	return base64_encode($imagedata);
+}
+
 //***********************************//
 //*****Action handling functions*****//
 //***********************************//
@@ -149,31 +166,24 @@ function get_quiz_form(){
 $problem_fired = 0;
 function get_math_problem( $mode ){
 	// only if this function was called exactly once
-	if($$problem_fired++ > 0)
+	if($problem_fired++ > 0)
 		return false;
 		
 	if(!current_user_can('publish_posts')){
 		if( $mode == 'ajax' ){
 			//Start session
-			$siteurl = parse_url( site_url() );
-			session_set_cookie_params(0, $siteurl['path']);
-			session_name('nyan-q');
-			session_start();
-			
-			//Get quiz setting
-			$quiz_setting = get_option('math-quiz-setting');
+			prepareSession();
 			
 			//Get things from the number engine
-			list($problem, $answer, $fieldname, $uniqueid) = number_engine( $quiz_setting['quiz-type'] );
+			list($problem, $answer, $uniqueid) = number_engine();
 			
 			//Store them into session data
 			$_SESSION[$uniqueid]['answer'] = $answer;
-			$_SESSION[$uniqueid]['fieldname'] = $fieldname;
 		
 			//Filter specific string
 			$fireworks = str_replace( '%problem%', $problem, get_quiz_form() );
 			$fireworks = str_replace( '%uniqueid%', $uniqueid, $fireworks );
-			$fireworks = str_replace( '%fieldname%', $fieldname, $fireworks );
+			$fireworks = str_replace( '%problemlabel%', __('Solve the problem: ', 'math-quiz'), $fireworks );
 			$fireworks = str_replace( '%reloadbutton%', __('Refresh Quiz', 'math-quiz'), $fireworks );
 			
 			echo $fireworks;
@@ -263,27 +273,24 @@ function check_math_answer( $commentdata ){
 		$comment_type != 'trackback' ) {
 		
 		//Start session
-		$siteurl = parse_url( site_url() );
-		session_set_cookie_params(0, $siteurl['path']);
-		session_name('nyan-q');
-		session_start();
+		prepareSession();
 		
 		//Use the uniqueid to get generated problem
 		$uniqueid = $_POST['uniqueid'];
 		
 		//Die if the problem can't be read from the session data
-		if ( empty( $_SESSION[$uniqueid] ) || empty($_POST[ $_SESSION[$uniqueid]['fieldname'] ]) ) {
+		if ( empty( $_SESSION[$uniqueid] ) || empty( $_POST['math-quiz'] ) ) {
 			wp_die( __( 'You failed to answer the question. Please go back and try another problem.', 'mathquiz' ) );
 		}
 		
 		//Check answer
-		if( $_POST[ $_SESSION[$uniqueid]['fieldname'] ] != $_SESSION[$uniqueid]['answer'] ) {
+		if( $_POST['math-quiz'] != $_SESSION[$uniqueid]['answer'] ) {
 			unset($_SESSION[$uniqueid]);
 			wp_die( __( 'The answer is incorrect.  Please go back and try another problem.', 'mathquiz' ) );
 		}
 		
 		//Problem solved, so destroy the uniqueid	
-		unset($_SESSION[$uniqueid]);
+		unset( $_SESSION[$uniqueid] );
 	}
 	
 	return $commentdata;
