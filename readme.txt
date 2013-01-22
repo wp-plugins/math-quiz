@@ -4,7 +4,7 @@ Donate link:
 Tags: comments, spam, captcha
 Requires at least: 3.0
 Tested up to: 3.5
-Stable tag: 0.6
+Stable tag: 0.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -23,6 +23,7 @@ Features:
 Functions to add:
 
 *   Do AJAX answer check before submitting the form.
+*   Picture customization will be added in the next release.
 
     **Note: if your siteurl and homeurl are in different domain, the plugin may not work properly due to "Cross-origin resource sharing" mechanism.**
 

@@ -129,16 +129,15 @@ function pictureGenerator( $text ){
 	$im = imagecreatetruecolor(90, 14); 
 	
 	// Create some colors
-	$white = imagecolorallocate($im, 255, 255, 255); 
-	$grey = imagecolorallocate($im, 128, 128, 128);
-	$black = imagecolorallocate($im, 0, 0, 0);
-	imagefilledrectangle($im, 0, 0, 199, 13, $white);
+	$bgcolor = imagecolorallocate($im, 255, 255, 255); 
+	$fontcolor = imagecolorallocate($im, 0, 0, 0);
+	imagefilledrectangle($im, 0, 0, 199, 13, $bgcolor);
 
 	// TrueType Font
 	$font = dirname( __FILE__ ) . '/fonts/SourceCodePro-Bold.ttf';
 
 	// Add the text
-	imagettftext($im, 10, 0, 2, 12, $black, $font, $text);
+	imagettftext($im, 10, 0, 2, 12, $fontcolor, $font, $text);
 
 	// Use output buffer to store the image for base64 conversion
 	ob_start();
