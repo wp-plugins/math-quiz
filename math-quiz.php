@@ -10,7 +10,7 @@ License: GPL2 or later
 */
 
 //Define constants
-define('SETTING_VERSION', '2.1');
+define('SETTING_VERSION', '2.6');
 
 //Make sure the plugin is not called outside WP
 if ( !function_exists( 'add_action' ) ) {
@@ -32,7 +32,7 @@ function start_math_engine(){
 	
 	//Read plugin setting
 	$quiz_setting = get_option('math-quiz-setting');
-	if ( !isset( $quiz_setting['setting_version'] ) || $quiz_setting['setting_version'] != SETTING_VERSION )
+	if ( empty( $quiz_setting['setting_version'] ) || $quiz_setting['setting_version'] != SETTING_VERSION )
 		update_setting();
 	
 	//Prepare plugin hooks
@@ -91,6 +91,12 @@ function update_setting(){
 	$init_setting = array(
 		'quiz-css' => 'theme',
 		'quiz-css-content' => '',
+		'quiz-color-bg-r' => '255',
+		'quiz-color-bg-g' => '255',
+		'quiz-color-bg-b' => '255',
+		'quiz-color-font-r' => '0',
+		'quiz-color-font-g' => '0',
+		'quiz-color-font-b' => '0',
 		'quiz-position-selector' => 'default',
 		'quiz-position' => 'submit',
 		'quiz-ajax' => 'after',
@@ -100,7 +106,7 @@ function update_setting(){
 	$quiz_setting = get_option('math-quiz-setting');
 	
 	//If there's a existing setting, merge it.
-	if( isset($quiz_setting['setting_version']) && version_compare( $quiz_setting['setting_version'], SETTING_VERSION, '<' )){
+	if( !empty($quiz_setting['setting_version']) && version_compare( $quiz_setting['setting_version'], SETTING_VERSION, '<' )){
 		$quiz_setting = array_merge( $init_setting, $quiz_setting );
 		$quiz_setting['setting_version'] = SETTING_VERSION;
 		update_option( 'math-quiz-setting', $quiz_setting );
@@ -125,12 +131,21 @@ function prepareSession(){
 
 //Base64 picture generator
 function pictureGenerator( $text ){
+	//Get setting
+	$quiz_setting = get_option('math-quiz-setting');
+	$bg_r = $quiz_setting['quiz-color-bg-r'];
+	$bg_g = $quiz_setting['quiz-color-bg-g'];
+	$bg_b = $quiz_setting['quiz-color-bg-b'];
+	$tx_r = $quiz_setting['quiz-color-font-r'];
+	$tx_g = $quiz_setting['quiz-color-font-g'];
+	$tx_b = $quiz_setting['quiz-color-font-b'];
+	
 	// Create the image
-	$im = imagecreatetruecolor(90, 14); 
+	$im = imagecreatetruecolor(90, 14);
 	
 	// Create some colors
-	$bgcolor = imagecolorallocate($im, 255, 255, 255); 
-	$fontcolor = imagecolorallocate($im, 0, 0, 0);
+	$bgcolor = imagecolorallocate($im, $bg_r, $bg_g, $bg_b); 
+	$fontcolor = imagecolorallocate($im, $tx_r, $tx_g, $tx_b);
 	imagefilledrectangle($im, 0, 0, 199, 13, $bgcolor);
 
 	// TrueType Font
@@ -178,6 +193,7 @@ function get_math_problem( $mode ){
 			$fireworks = str_replace( '%reloadbutton%', __('Refresh Quiz', 'math-quiz'), $fireworks );
 			
 			echo $fireworks;
+			
 		}else{
 			// echo ajax script in footer
 			add_action( 'wp_footer', 'get_ajax_script' );
