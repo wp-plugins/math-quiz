@@ -3,14 +3,14 @@
 Plugin Name: Math Quiz
 Plugin URI: http://wordpress.org/extend/plugins/math-quiz/
 Description: Generating random math problem for comment form.
-Version: 0.5
+Version: 0.6
 Author: ATI
 Author URI: http://atifans.net/
 License: GPL2 or later
 */
 
 //Define constants
-define('SETTING_VERSION', '2.0');
+define('SETTING_VERSION', '2.1');
 
 //Make sure the plugin is not called outside WP
 if ( !function_exists( 'add_action' ) ) {
@@ -69,24 +69,19 @@ function number_engine(){
 		$uniqueid .= $characters[mt_rand(0, strlen($characters)-1)];
     }
 	
-	//Character selector
-	$chars = array('▒', '▨', '◕', '☀', '☃', '☭', '☢', '☯', '♞', '☪', '☨', '✪');
-	$char1 = $char2 = 0;
-	while($char1 == $char2){
-		$char1 = mt_rand(0, count($chars) );
-		$char2 = mt_rand(0, count($chars) );
+	//Select to use + or - 
+	$selector = mt_rand(0, 1);
+	$num1 = mt_rand(10, 50);
+	$num2 = mt_rand(1, $num1);
+	if( $selector == 0 ){
+		$problem = $num1 . ' + ' . $num2 . ' = ?';
+		$answer = $num1 + $num2;
+	}else{
+		$problem = $num1 . ' - ' . $num2 . ' = ?';
+		$answer = $num1 - $num2;
 	}
-	$char1 = $chars[ $char1 ];
-	$char2 = $chars[ $char2 ];
 	
-	$num1 = mt_rand(0, 10);
-	$num2 = mt_rand(0, 10);
-	$num3 = mt_rand(0, 5);
-	$num4 = mt_rand(0, 5);
-	
-	$problem = $char1.'='.$num1.', '.$char2.'='.$num2.', ⟨'.$char1.'x'.$num3.'⟩+⟨'.$char2.'x'.$num4.'⟩= ?';
 	$problem = pictureGenerator( $problem );
-	$answer = $num1*$num3 + $num2*$num4;
 	
 	return array($problem, $answer, $uniqueid);
 }
@@ -117,7 +112,7 @@ function update_setting(){
 
 //Fixed quiz form
 function get_quiz_form(){
-	return '<p id="mathquiz"><label for="mathquiz">%problemlabel%<img src="data:image/png;base64,%problem%"></label><input name="math-quiz" type="text" /><a id="refresh-mathquiz" href="javascript:void(0)">%reloadbutton%</a><input type="hidden" name="uniqueid" value="%uniqueid%" /></p>';
+	return '<p id="mathquiz"><label for="mathquiz">%problemlabel%<img src="data:image/png;base64,%problem%"></label> <input name="math-quiz" type="text" /> <a id="refresh-mathquiz" href="javascript:void(0)">%reloadbutton%</a><input type="hidden" name="uniqueid" value="%uniqueid%" /></p>';
 }
 
 //Fire the session
@@ -131,7 +126,7 @@ function prepareSession(){
 //Base64 picture generator
 function pictureGenerator( $text ){
 	// Create the image
-	$im = imagecreatetruecolor(200, 14); 
+	$im = imagecreatetruecolor(90, 14); 
 	
 	// Create some colors
 	$white = imagecolorallocate($im, 255, 255, 255); 
@@ -140,10 +135,7 @@ function pictureGenerator( $text ){
 	imagefilledrectangle($im, 0, 0, 199, 13, $white);
 
 	// TrueType Font
-	$font = dirname( __FILE__ ) . '/fonts/unifont.ttf';
-
-	// Add some shadow to the text
-	imagettftext($im, 10, 0, 3, 13, $grey, $font, $text);
+	$font = dirname( __FILE__ ) . '/fonts/SourceCodePro-Bold.ttf';
 
 	// Add the text
 	imagettftext($im, 10, 0, 2, 12, $black, $font, $text);
@@ -285,7 +277,7 @@ function check_math_answer( $commentdata ){
 		
 		//Check answer
 		if( $_POST['math-quiz'] != $_SESSION[$uniqueid]['answer'] ) {
-			unset($_SESSION[$uniqueid]);
+			unset( $_SESSION[$uniqueid] );
 			wp_die( __( 'The answer is incorrect.  Please go back and try another problem.', 'mathquiz' ) );
 		}
 		

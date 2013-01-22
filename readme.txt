@@ -4,7 +4,7 @@ Donate link:
 Tags: comments, spam, captcha
 Requires at least: 3.0
 Tested up to: 3.5
-Stable tag: 0.5
+Stable tag: 0.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -19,12 +19,9 @@ Features:
 *   Dynamic problem and form field name prevent spam robots from posting unwanted content.
 *   Quiz form is inserted using AJAX for a better compatibility with HTML cache plugin.
 *   Form style and position can be fully customized through control panel.
-*   Support several types of quiz for what you can choose in admin panel (will be removed in the next release).
 
 Functions to add:
 
-*   Use pictured math problem to avoid HTML parsers.
-*   Replace dynamic form field name with a fixed one.
 *   Do AJAX answer check before submitting the form.
 
     **Note: if your siteurl and homeurl are in different domain, the plugin may not work properly due to "Cross-origin resource sharing" mechanism.**
@@ -41,9 +38,13 @@ Install this plugin is easy.
 
 = Why it always tells me that I'm failed to answer the quiz? =
 
-Client browser must support Cookie and JavaScript because the plugin uses Session to store quiz data and AJAX to insert the quiz form.
+Client browsers must support Cookie and JavaScript because the plugin uses Session to store quiz data and AJAX to insert the quiz form.
 
 == Changelog ==
+
+= 0.6 =
+* Problems now come in pictured form.
+* Only addition and subtraction are available.
 
 = 0.5 =
 * Fix compatibility with built-in theme, such as twentyeleven.
@@ -65,6 +66,9 @@ Client browser must support Cookie and JavaScript because the plugin uses Sessio
 * Initial release.
 
 == Upgrade Notice ==
+
+= 0.6 =
+Problems now come in pictured form.
 
 = 0.5 =
 Fix compatibility with built-in theme, such as twentyeleven.
