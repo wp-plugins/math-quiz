@@ -170,9 +170,9 @@ function pictureGenerator( $text ){
 //***********************************//
 
 //Generate math problem for unknown users
-$problem_fired = 0;
 function get_math_problem( $mode ){
 	// only if this function was called exactly once
+    static $problem_fired = 0;
 	if($problem_fired++ > 0)
 		return false;
 		
@@ -188,10 +188,9 @@ function get_math_problem( $mode ){
 			$_SESSION[$uniqueid]['answer'] = $answer;
 		
 			//Filter specific string
-			$fireworks = str_replace( '%problem%', $problem, get_quiz_form() );
-			$fireworks = str_replace( '%uniqueid%', $uniqueid, $fireworks );
-			$fireworks = str_replace( '%problemlabel%', __('Solve the problem: ', 'math-quiz'), $fireworks );
-			$fireworks = str_replace( '%reloadbutton%', __('Refresh Quiz', 'math-quiz'), $fireworks );
+            $stringToBeReplace = array('%problem%', '%uniqueid%', '%problemlabel%', '%reloadbutton%');
+            $stringToReplace = array($problem, $uniqueid, __('Solve the problem: ', 'math-quiz'), __('Refresh Quiz', 'math-quiz'));
+			$fireworks = str_replace( $stringToBeReplace, $stringToReplace, get_quiz_form() );
 			
 			echo $fireworks;
 			
@@ -205,9 +204,9 @@ function get_math_problem( $mode ){
 }
 
 //Echo ajax code
-$ajax_fired = 0;
 function get_ajax_script(){
 	// only if this function was called exactly once
+    static $ajax_fired = 0;
 	if( $ajax_fired++ > 0 )
 		return false;
 	
@@ -255,9 +254,9 @@ function get_ajax_script(){
 }
 
 //Echo style sheet
-$style_fired = 0;
 function get_style_sheet(){
 	// only if this function was called exactly once
+    static $style_fired = 0;
 	if( $style_fired++ > 0 )
 		return false;
 	
