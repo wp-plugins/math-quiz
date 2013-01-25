@@ -39,6 +39,7 @@ function start_math_engine(){
 	if( ! is_admin() ) {
 		//Ajax hook
 		if ( isset($_GET['math_quiz_ajax']) && $_GET['math_quiz_ajax'] == 'get_problem' ) {
+			header("Content-Type: text/html; charset=UTF-8");
 			get_math_problem('ajax');
 			exit();
 		}
