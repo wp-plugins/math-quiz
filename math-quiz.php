@@ -188,8 +188,8 @@ function get_math_problem( $mode ){
 			$_SESSION[$uniqueid]['answer'] = $answer;
 		
 			//Filter specific string
-            $stringToBeReplace = array('%problem%', '%uniqueid%', '%problemlabel%', '%reloadbutton%');
-            $stringToReplace = array($problem, $uniqueid, __('Solve the problem: ', 'math-quiz'), __('Refresh Quiz', 'math-quiz'));
+			$stringToBeReplace = array('%problem%', '%uniqueid%', '%problemlabel%', '%reloadbutton%');
+			$stringToReplace = array($problem, $uniqueid, __('Solve the problem: ', 'math-quiz'), __('Refresh Quiz', 'math-quiz'));
 			$fireworks = str_replace( $stringToBeReplace, $stringToReplace, get_quiz_form() );
 			
 			echo $fireworks;

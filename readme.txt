@@ -16,9 +16,9 @@ Math Quiz generates dynamic math problem in the comment form to beat spam robots
 
 Features:
 
-*   Dynamic problem and form field name prevent spam robots from posting unwanted content.
-*   Quiz form is inserted using AJAX for a better compatibility with HTML cache plugin.
-*   Form style and position can be fully customized through control panel.
+*   Dynamic problems prevent spam robots from posting unwanted content.
+*   Quiz form inserted using AJAX for better compatibility with HTML cache plugin.
+*   Form style and position can be fully customized in control panel.
 
 Functions to add:
 
