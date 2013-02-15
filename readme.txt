@@ -14,7 +14,7 @@ Math Quiz generates dynamic math problem in the comment form to beat spam robots
 
 Math Quiz generates dynamic math problem in the comment form to beat spam robots and provides flexible form style customization.
 
-Demo website: http://atifans.net/ (with Supercache enabled)
+Demo website: http://atifans.net/ (with Supercache and AJAX comment form enabled)
 
 Features:
 
