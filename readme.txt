@@ -42,6 +42,10 @@ Install this plugin is easy.
 
 Client browsers must support Cookie and JavaScript because the plugin uses Session to store quiz data and AJAX to insert the quiz form.
 
+= Why the plugin can't be removed? =
+
+Freetype, a text renderer, keeps the font file handle open, causing Windows and other OS to lock the font file. Just shutdown PHP and there you go.
+
 == Changelog ==
 
 = 0.7 =
