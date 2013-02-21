@@ -4,7 +4,7 @@ Donate link:
 Tags: comments, spam, captcha
 Requires at least: 3.0
 Tested up to: 3.5
-Stable tag: 0.6
+Stable tag: 0.7
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -44,6 +44,9 @@ Client browsers must support Cookie and JavaScript because the plugin uses Sessi
 
 == Changelog ==
 
+= 0.7 =
+*Fix failure when answer is 0.
+
 = 0.6 =
 * Problems now come in pictured form.
 * Only addition and subtraction are available.
@@ -68,6 +71,9 @@ Client browsers must support Cookie and JavaScript because the plugin uses Sessi
 * Initial release.
 
 == Upgrade Notice ==
+
+= 0.7 =
+Fix failure when answer is 0.
 
 = 0.6 =
 Problems now come in pictured form.

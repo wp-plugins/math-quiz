@@ -3,7 +3,7 @@
 Plugin Name: Math Quiz
 Plugin URI: http://wordpress.org/extend/plugins/math-quiz/
 Description: Generating random math problem for comment form.
-Version: 0.6
+Version: 0.7
 Author: ATI
 Author URI: http://atifans.net/
 License: GPL2 or later
@@ -73,7 +73,7 @@ function number_engine(){
 	//Select to use + or - 
 	$selector = mt_rand(0, 1);
 	$num1 = mt_rand(10, 50);
-	$num2 = mt_rand(1, $num1);
+	$num2 = mt_rand(1, $num1-1);
 	if( $selector == 0 ){
 		$problem = $num1 . ' + ' . $num2 . ' = ?';
 		$answer = $num1 + $num2;
