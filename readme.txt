@@ -49,7 +49,7 @@ Freetype, a text renderer, keeps the font file handle open, causing Windows and 
 == Changelog ==
 
 = 0.7 =
-*Fix failure when answer is 0.
+* Fix failure when answer is 0.
 
 = 0.6 =
 * Problems now come in pictured form.
