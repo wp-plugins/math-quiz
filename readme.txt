@@ -4,7 +4,7 @@ Donate link:
 Tags: comments, spam, captcha
 Requires at least: 3.0
 Tested up to: 3.5
-Stable tag: 0.7
+Stable tag: 0.8
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -26,8 +26,6 @@ Functions to add:
 
 *   Do AJAX answer check before submitting the form.
 
-    **Note: if your siteurl and homeurl are in different domain, the plugin may not work properly due to "Cross-origin resource sharing" mechanism.**
-
 == Installation ==
 
 Install this plugin is easy.
@@ -47,6 +45,9 @@ Client browsers must support Cookie and JavaScript because the plugin uses Sessi
 Freetype, a text renderer, keeps the font file handle open, causing Windows and other OS to lock the font file. Just shutdown PHP and there you go.
 
 == Changelog ==
+
+= 0.8 =
+* Add support for cross-domain sites.
 
 = 0.7 =
 * Fix failure when answer is 0.
@@ -75,6 +76,9 @@ Freetype, a text renderer, keeps the font file handle open, causing Windows and 
 * Initial release.
 
 == Upgrade Notice ==
+
+= 0.8 =
+Add support for cross-domain sites.
 
 = 0.7 =
 Fix failure when answer is 0.

@@ -3,7 +3,7 @@
 Plugin Name: Math Quiz
 Plugin URI: http://wordpress.org/extend/plugins/math-quiz/
 Description: Generating random math problem for comment form.
-Version: 0.7
+Version: 0.8
 Author: ATI
 Author URI: http://atifans.net/
 License: GPL2 or later
@@ -119,7 +119,7 @@ function update_setting(){
 
 //Fixed quiz form
 function get_quiz_form(){
-	return '<p id="mathquiz"><label for="mathquiz">%problemlabel%<img src="data:image/png;base64,%problem%"></label> <input name="math-quiz" type="text" /> <a id="refresh-mathquiz" href="javascript:void(0)">%reloadbutton%</a><input type="hidden" name="uniqueid" value="%uniqueid%" /></p>';
+	return '<p id="mathquiz"><label for="mathquiz">%problemlabel%<img src="data:image/png;base64,%problem%"></label> <input name="math-quiz" type="text" /> <a id="refresh-mathquiz" href="javascript:void(0)">%reloadbutton%</a><input type="hidden" name="uniqueid" value="%uniqueid%" /><input type="hidden" name="nyan-q" value="%sessionid%" /></p>';
 }
 
 //Fire the session
@@ -178,6 +178,9 @@ function get_math_problem( $mode ){
 		
 	if(!current_user_can('publish_posts')){
 		if( $mode == 'ajax' ){
+			//Support cross domain AJAX call
+			header('Access-Control-Allow-Origin: ' . home_url() );
+			
 			//Start session
 			prepareSession();
 			
@@ -188,8 +191,8 @@ function get_math_problem( $mode ){
 			$_SESSION[$uniqueid]['answer'] = $answer;
 		
 			//Filter specific string
-			$stringToBeReplace = array('%problem%', '%uniqueid%', '%problemlabel%', '%reloadbutton%');
-			$stringToReplace = array($problem, $uniqueid, __('Solve the problem: ', 'math-quiz'), __('Refresh Quiz', 'math-quiz'));
+			$stringToBeReplace = array('%problem%', '%uniqueid%', '%sessionid%', '%problemlabel%', '%reloadbutton%');
+			$stringToReplace = array($problem, $uniqueid, session_id(),__('Solve the problem: ', 'math-quiz'), __('Refresh Quiz', 'math-quiz'));
 			$fireworks = str_replace( $stringToBeReplace, $stringToReplace, get_quiz_form() );
 			
 			echo $fireworks;
@@ -279,6 +282,8 @@ function check_math_answer( $commentdata ){
 		$comment_type != 'pingback' &&
 		$comment_type != 'trackback' ) {
 		
+		//Resume session
+		session_id($_POST['nyan-q']);
 		//Start session
 		prepareSession();
 		
