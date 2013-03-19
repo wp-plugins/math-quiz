@@ -54,21 +54,6 @@ function math_setting_page(){
 				</td>
 			</tr>
 			<tr valign="top">
-				<th scope="row"><label for="quiz-color"><?php _e('Quiz Color Customization', 'math-quiz'); ?></label></th>
-				<td>
-				<?php _e('Background color in RGB(0~255): ', 'math-quiz'); ?>
-				<input name="quiz-color-bg-r" type="text" id="quiz-color-bg-r" value="<?php echo $quiz_setting['quiz-color-bg-r']; ?>" class="small-text" placeholder="Red"/>,
-				<input name="quiz-color-bg-g" type="text" id="quiz-color-bg-g" value="<?php echo $quiz_setting['quiz-color-bg-g']; ?>" class="small-text" placeholder="Green"/>,
-				<input name="quiz-color-bg-b" type="text" id="quiz-color-bg-b" value="<?php echo $quiz_setting['quiz-color-bg-b']; ?>" class="small-text" placeholder="Blue"/>
-				<br>
-				<?php _e('Text color in RGB(0~255): ', 'math-quiz'); ?>
-				<input name="quiz-color-font-r" type="text" id="quiz-color-font-r" value="<?php echo $quiz_setting['quiz-color-font-r']; ?>" class="small-text" placeholder="Red"/>,
-				<input name="quiz-color-font-g" type="text" id="quiz-color-font-g" value="<?php echo $quiz_setting['quiz-color-font-g']; ?>" class="small-text" placeholder="Green"/>,
-				<input name="quiz-color-font-b" type="text" id="quiz-color-font-b" value="<?php echo $quiz_setting['quiz-color-font-b']; ?>" class="small-text" placeholder="Blue"/>
-				<p class="description"><?php _e('Choose the color you want!', 'math-quiz'); ?></p>
-				</td>
-			</tr>
-			<tr valign="top">
 				<th scope="row"><label for="quiz-css"><?php _e('Quiz Form Customization', 'math-quiz'); ?></label></th>
 				<td>
 				<select name="quiz-css" id="quiz-css">
@@ -191,25 +176,6 @@ function save_setting(){
 			if(strlen($setting_error) > 0) $setting_error .= ', ';
 			$setting_error .= __('Quiz Insert Method', 'math-quiz');
 		}
-		
-		//Check text color
-		if( $_POST['quiz-color-bg-r'] < 256 && $_POST['quiz-color-bg-r'] > -1 )
-			$quiz_setting['quiz-color-bg-r'] = $_POST['quiz-color-bg-r'];
-			
-		if( $_POST['quiz-color-bg-g'] < 256 && $_POST['quiz-color-bg-g'] > -1 )
-			$quiz_setting['quiz-color-bg-g'] = $_POST['quiz-color-bg-g'];
-			
-		if( $_POST['quiz-color-bg-b'] < 256 && $_POST['quiz-color-bg-b'] > -1 )
-			$quiz_setting['quiz-color-bg-b'] = $_POST['quiz-color-bg-b'];
-			
-		if( $_POST['quiz-color-font-r'] < 256 && $_POST['quiz-color-font-r'] > -1 )
-			$quiz_setting['quiz-color-font-r'] = $_POST['quiz-color-font-r'];
-		
-		if( $_POST['quiz-color-font-g'] < 256 && $_POST['quiz-color-font-g'] > -1 )
-			$quiz_setting['quiz-color-font-g'] = $_POST['quiz-color-font-g'];
-		
-		if( $_POST['quiz-color-font-b'] < 256 && $_POST['quiz-color-font-b'] > -1 )
-			$quiz_setting['quiz-color-font-b'] = $_POST['quiz-color-font-b'];
 		
 		update_option( 'math-quiz-setting', stripslashes_deep($quiz_setting) );
 	}

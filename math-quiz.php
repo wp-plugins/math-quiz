@@ -3,14 +3,14 @@
 Plugin Name: Math Quiz
 Plugin URI: http://wordpress.org/extend/plugins/math-quiz/
 Description: Generating random math problem for comment form.
-Version: 0.8
+Version: 0.9
 Author: ATI
 Author URI: http://atifans.net/
 License: GPL2 or later
 */
 
 //Define constants
-define('SETTING_VERSION', '2.6');
+define('SETTING_VERSION', '2.7');
 
 //Make sure the plugin is not called outside WP
 if ( !function_exists( 'add_action' ) ) {
@@ -92,12 +92,6 @@ function update_setting(){
 	$init_setting = array(
 		'quiz-css' => 'theme',
 		'quiz-css-content' => '',
-		'quiz-color-bg-r' => '255',
-		'quiz-color-bg-g' => '255',
-		'quiz-color-bg-b' => '255',
-		'quiz-color-font-r' => '0',
-		'quiz-color-font-g' => '0',
-		'quiz-color-font-b' => '0',
 		'quiz-position-selector' => 'default',
 		'quiz-position' => 'submit',
 		'quiz-ajax' => 'after',
@@ -106,9 +100,10 @@ function update_setting(){
 	
 	$quiz_setting = get_option('math-quiz-setting');
 	
-	//If there's a existing setting, merge it.
+	//If there's a existing setting, merge it and remove old one.
 	if( !empty($quiz_setting['setting_version']) && version_compare( $quiz_setting['setting_version'], SETTING_VERSION, '<' )){
-		$quiz_setting = array_merge( $init_setting, $quiz_setting );
+		$intersect = array_intersect($init_setting, $quiz_setting);
+		$quiz_setting = array_merge( $init_setting, $intersect );
 		$quiz_setting['setting_version'] = SETTING_VERSION;
 		update_option( 'math-quiz-setting', $quiz_setting );
 	}else{
@@ -132,34 +127,39 @@ function prepareSession(){
 
 //Base64 picture generator
 function pictureGenerator( $text ){
-	//Get setting
-	$quiz_setting = get_option('math-quiz-setting');
-	$bg_r = $quiz_setting['quiz-color-bg-r'];
-	$bg_g = $quiz_setting['quiz-color-bg-g'];
-	$bg_b = $quiz_setting['quiz-color-bg-b'];
-	$tx_r = $quiz_setting['quiz-color-font-r'];
-	$tx_g = $quiz_setting['quiz-color-font-g'];
-	$tx_b = $quiz_setting['quiz-color-font-b'];
-	
-	// Create the image
-	$im = imagecreatetruecolor(90, 14);
-	
-	// Create some colors
-	$bgcolor = imagecolorallocate($im, $bg_r, $bg_g, $bg_b); 
-	$fontcolor = imagecolorallocate($im, $tx_r, $tx_g, $tx_b);
-	imagefilledrectangle($im, 0, 0, 199, 13, $bgcolor);
+	 // constant values
+    $backgroundSizeX = 2000;
+    $backgroundSizeY = 350;
+    $sizeX = 120;
+    $sizeY = 30;
+    $fontFile = dirname( __FILE__ ) . '/lib/SourceCodePro-Bold.ttf';
+    $textLength = strlen($text);
+ 
+    // generate random security values
+    $backgroundOffsetX = mt_rand(0, $backgroundSizeX - $sizeX - 1);
+    $backgroundOffsetY = mt_rand(0, $backgroundSizeY - $sizeY - 1);
+    $angle = mt_rand(-5, 5);
+    $fontColorR = 50;
+    $fontColorG = 50;
+    $fontColorB = 50;
+    $fontSize = mt_rand(13, 16);
+    $textX = mt_rand(0, (int)($sizeX - 0.68 * $textLength * $fontSize)); // these coefficients are empiric
+    $textY = mt_rand($fontSize, (int)($sizeY - 0.5 * $fontSize)); // don't try to learn how they were taken out
 
-	// TrueType Font
-	$font = dirname( __FILE__ ) . '/fonts/SourceCodePro-Bold.ttf';
+    // create image with background
+    $src_im = imagecreatefrompng( dirname( __FILE__ ) . "/lib/background.png");
+	$dst_im = imagecreatetruecolor($sizeX, $sizeY);
+    $resizeResult = imagecopyresampled($dst_im, $src_im, 0, 0, $backgroundOffsetX, $backgroundOffsetY, $sizeX, $sizeY, $sizeX, $sizeY);
 
-	// Add the text
-	imagettftext($im, 10, 0, 2, 12, $fontcolor, $font, $text);
+    $color = imagecolorallocate($dst_im, $fontColorR, $fontColorG, $fontColorB);
 
-	// Use output buffer to store the image for base64 conversion
+    imagettftext($dst_im, $fontSize, -$angle, $textX, $textY, $color, $fontFile, $text);
+
 	ob_start();
-		imagepng($im);
+		imagepng($dst_im);
 		$imagedata = ob_get_contents(); // read from buffer
-		imagedestroy($im);
+		imagedestroy($src_im); // free memory
+		imagedestroy($dst_im);
 	ob_end_clean(); // delete buffer
 	
 	return base64_encode($imagedata);
@@ -191,8 +191,20 @@ function get_math_problem( $mode ){
 			$_SESSION[$uniqueid]['answer'] = $answer;
 		
 			//Filter specific string
-			$stringToBeReplace = array('%problem%', '%uniqueid%', '%sessionid%', '%problemlabel%', '%reloadbutton%');
-			$stringToReplace = array($problem, $uniqueid, session_id(),__('Solve the problem: ', 'math-quiz'), __('Refresh Quiz', 'math-quiz'));
+			$stringToBeReplace = array(
+				'%problem%',
+				'%uniqueid%',
+				'%sessionid%',
+				'%problemlabel%',
+				'%reloadbutton%'
+			);
+			$stringToReplace = array(
+				$problem, 
+				$uniqueid, 
+				session_id(),
+				__('Solve the problem: ', 'math-quiz'), 
+				__('Refresh Quiz', 'math-quiz')
+			);
 			$fireworks = str_replace( $stringToBeReplace, $stringToReplace, get_quiz_form() );
 			
 			echo $fireworks;

@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: math-quiz\n"
-"POT-Creation-Date: 2013-01-22 18:56+0800\n"
-"PO-Revision-Date: 2013-01-22 18:58+0800\n"
+"POT-Creation-Date: 2013-03-19 20:17+0800\n"
+"PO-Revision-Date: 2013-03-19 20:17+0800\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -34,103 +34,99 @@ msgid "This is how your quiz form will look like, customize it using CSS!"
 msgstr "這是測驗表單的形式，請用CSS來修改他的樣式。"
 
 #: C:\math-quiz\trunk/admin.php:57
-msgid "Quiz Color Customization"
-msgstr "測驗圖片顏色客製化"
-
-#: C:\math-quiz\trunk/admin.php:59
-msgid "Background color in RGB(0~255): "
-msgstr "背景顏色RGB(0~255)："
-
-#: C:\math-quiz\trunk/admin.php:64
-msgid "Text color in RGB(0~255): "
-msgstr "文字顏色RGB(0~255)："
-
-#: C:\math-quiz\trunk/admin.php:68
-msgid "Choose the color you want!"
-msgstr "選擇你想要的顏色！"
-
-#: C:\math-quiz\trunk/admin.php:72
 msgid "Quiz Form Customization"
 msgstr "測驗表單客製化"
 
-#: C:\math-quiz\trunk/admin.php:77
+#: C:\math-quiz\trunk/admin.php:62
 msgid "Use theme CSS"
 msgstr "使用佈景主題的CSS"
 
-#: C:\math-quiz\trunk/admin.php:78
+#: C:\math-quiz\trunk/admin.php:63
 msgid "Customize it here"
 msgstr "在這裡修改CSS樣式"
 
-#: C:\math-quiz\trunk/admin.php:89
+#: C:\math-quiz\trunk/admin.php:74
 msgid "It's recommended to use theme CSS."
 msgstr "推薦使用佈景主題主題的CSS。"
 
-#: C:\math-quiz\trunk/admin.php:93 C:\math-quiz\trunk/admin.php:182
+#: C:\math-quiz\trunk/admin.php:78 C:\math-quiz\trunk/admin.php:167
 msgid "Quiz Position"
 msgstr "測驗表單位置"
 
-#: C:\math-quiz\trunk/admin.php:98
+#: C:\math-quiz\trunk/admin.php:83
 msgid "Use default position"
 msgstr "使用預設位置"
 
-#: C:\math-quiz\trunk/admin.php:99
+#: C:\math-quiz\trunk/admin.php:84
 msgid "Customize it yourself"
 msgstr "自訂位置"
 
-#: C:\math-quiz\trunk/admin.php:113
+#: C:\math-quiz\trunk/admin.php:98
 msgid "Insert before"
 msgstr "前置於"
 
-#: C:\math-quiz\trunk/admin.php:114
+#: C:\math-quiz\trunk/admin.php:99
 msgid "Insert into"
 msgstr "置入於"
 
-#: C:\math-quiz\trunk/admin.php:115
+#: C:\math-quiz\trunk/admin.php:100
 msgid "Insert after"
 msgstr "後置於"
 
-#: C:\math-quiz\trunk/admin.php:125
+#: C:\math-quiz\trunk/admin.php:110
 msgid "the HTML element id: "
 msgstr "HTML元素ID："
 
-#: C:\math-quiz\trunk/admin.php:127
+#: C:\math-quiz\trunk/admin.php:112
 msgid ""
 "Please enter the \"HTML element id\" where you want to insert the quiz form, "
 "and choose a insert method."
 msgstr "請輸入你想要插入測驗表單的「HTML元素ID」，並選擇如何置入。"
 
-#: C:\math-quiz\trunk/admin.php:132
+#: C:\math-quiz\trunk/admin.php:117
 msgid "Save Changes"
 msgstr "儲存設定"
 
-#: C:\math-quiz\trunk/admin.php:164
+#: C:\math-quiz\trunk/admin.php:149
 msgid "Quiz Customization"
 msgstr "測驗表單客製化"
 
-#: C:\math-quiz\trunk/admin.php:174
+#: C:\math-quiz\trunk/admin.php:159
 msgid "Quiz Position Type Selector"
 msgstr "表單設定模式"
 
-#: C:\math-quiz\trunk/admin.php:192
+#: C:\math-quiz\trunk/admin.php:177
 msgid "Quiz Insert Method"
 msgstr "測驗表單置入"
 
-#: C:\math-quiz\trunk/math-quiz.php:192
+#: C:\math-quiz\trunk/math-quiz.php:195
 msgid "Solve the problem: "
 msgstr "解題："
 
-#: C:\math-quiz\trunk/math-quiz.php:193
+#: C:\math-quiz\trunk/math-quiz.php:195
 msgid "Refresh Quiz"
 msgstr "換個問題"
 
-#: C:\math-quiz\trunk/math-quiz.php:290
+#: C:\math-quiz\trunk/math-quiz.php:295
 msgid ""
 "You failed to answer the question. Please go back and try another problem."
 msgstr "無法驗證你的答案，請換個題目再重試。"
 
-#: C:\math-quiz\trunk/math-quiz.php:296
+#: C:\math-quiz\trunk/math-quiz.php:301
 msgid "The answer is incorrect.  Please go back and try another problem."
 msgstr "答案不正確，請換個題目再重試。"
+
+#~ msgid "Quiz Color Customization"
+#~ msgstr "測驗圖片顏色客製化"
+
+#~ msgid "Background color in RGB(0~255): "
+#~ msgstr "背景顏色RGB(0~255)："
+
+#~ msgid "Text color in RGB(0~255): "
+#~ msgstr "文字顏色RGB(0~255)："
+
+#~ msgid "Choose the color you want!"
+#~ msgstr "選擇你想要的顏色！"
 
 #~ msgid "Quiz Type"
 #~ msgstr "測驗類型"
