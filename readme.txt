@@ -12,15 +12,15 @@ Math Quiz generates dynamic math problem in the comment form to beat spam robots
 
 == Description ==
 
-Math Quiz generates dynamic math problem in the comment form to beat spam robots and provides flexible form style customization.
+Math Quiz generates dynamic math problem in the comment form to beat spam robots and supports flexible form style customization.
 
 Demo website: http://atifans.net/ (with Supercache and AJAX comment form enabled)
 
 Features:
 
 *   Dynamic problems prevent spam robots from posting unwanted content.
-*   Quiz form inserted using AJAX for better compatibility with HTML cache plugin.
-*   Form style and position can be fully customized in control panel.
+*   Quiz form inserted using AJAX for better compatibility with HTML cache plugins.
+*   Form style and position can be fully customized in the control panel.
 
 == Installation ==
 
@@ -34,11 +34,11 @@ Install this plugin is easy.
 
 = Why it always tells me that I'm failed to answer the quiz? =
 
-Client browsers must support Cookie and JavaScript because the plugin uses Session to store quiz data and AJAX to insert the quiz form.
+"Failed to answer" means the plugin encounters some problems to get needed information. If you think it's my fault, feel free to inform me. :)
 
 = Why the plugin can't be removed? =
 
-Freetype, a text renderer, keeps the font file handle open, causing Windows and other OS to lock the font file. Just shutdown PHP and there you go.
+Freetype, a text renderer, keeps the font file handle open, causing Windows and other OS to lock the font file. Deactivate the plugin before you update it.
 
 == Changelog ==
 
