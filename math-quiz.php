@@ -142,9 +142,9 @@ function pictureGenerator( $text ){
     $fontColorR = 50;
     $fontColorG = 50;
     $fontColorB = 50;
-    $fontSize = mt_rand(13, 16);
+    $fontSize = mt_rand(14, 16);
     $textX = mt_rand(0, (int)($sizeX - 0.68 * $textLength * $fontSize)); // these coefficients are empiric
-    $textY = mt_rand($fontSize, (int)($sizeY - 0.5 * $fontSize)); // don't try to learn how they were taken out
+    $textY = mt_rand((int)($fontSize * 1.2), (int)($sizeY - 0.5 * $fontSize)); // don't try to learn how they were taken out
 
     // create image with background
     $src_im = imagecreatefrompng( dirname( __FILE__ ) . "/lib/background.png");
