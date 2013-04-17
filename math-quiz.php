@@ -114,7 +114,7 @@ function update_setting(){
 
 //Fixed quiz form
 function get_quiz_form(){
-	return '<p id="mathquiz"><label for="mathquiz">%problemlabel%<img src="data:image/png;base64,%problem%"></label> <input name="math-quiz" type="text" /> <a id="refresh-mathquiz" href="javascript:void(0)">%reloadbutton%</a><input type="hidden" name="uniqueid" value="%uniqueid%" /><input type="hidden" name="nyan-q" value="%sessionid%" /></p>';
+	return '<p id="mathquiz"><label for="mathquiz">%problemlabel%<img src="data:image/jpeg;base64,%problem%"></label> <input name="math-quiz" type="text" /> <a id="refresh-mathquiz" href="javascript:void(0)">%reloadbutton%</a><input type="hidden" name="uniqueid" value="%uniqueid%" /><input type="hidden" name="nyan-q" value="%sessionid%" /></p>';
 }
 
 //Fire the session
@@ -139,9 +139,9 @@ function pictureGenerator( $text ){
     $backgroundOffsetX = mt_rand(0, $backgroundSizeX - $sizeX - 1);
     $backgroundOffsetY = mt_rand(0, $backgroundSizeY - $sizeY - 1);
     $angle = mt_rand(-5, 5);
-    $fontColorR = 50;
-    $fontColorG = 50;
-    $fontColorB = 50;
+    $fontColorR = mt_rand(50, 60);
+    $fontColorG = mt_rand(50, 60);
+    $fontColorB = mt_rand(50, 60);
     $fontSize = mt_rand(14, 16);
     $textX = mt_rand(0, (int)($sizeX - 0.68 * $textLength * $fontSize)); // these coefficients are empiric
     $textY = mt_rand((int)($fontSize * 1.2), (int)($sizeY - 0.5 * $fontSize)); // don't try to learn how they were taken out
@@ -156,7 +156,7 @@ function pictureGenerator( $text ){
     imagettftext($dst_im, $fontSize, -$angle, $textX, $textY, $color, $fontFile, $text);
 
 	ob_start();
-		imagepng($dst_im);
+		imagejpeg($dst_im, NULL, 80);
 		$imagedata = ob_get_contents(); // read from buffer
 		imagedestroy($src_im); // free memory
 		imagedestroy($dst_im);
