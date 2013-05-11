@@ -165,6 +165,23 @@ function pictureGenerator( $text ){
 	return base64_encode($imagedata);
 }
 
+function checkDNSValidity($host, $ip){
+	$dnsV4 = dns_get_record($host, DNS_A);
+	$dnsV6 = dns_get_record($host, DNS_AAAA);
+
+	for($i = 0; $i < count($dnsV4); $i++){
+		if( $dnsV4[$i]['ip'] == $ip )
+			return true;
+	}
+
+	for($i = 0; $i < count($dnsV6); $i++){
+		if( $dnsV6[$i]['ip'] == $ip )
+			return true;
+	}
+
+	return false;
+}
+
 //***********************************//
 //*****Action handling functions*****//
 //***********************************//
@@ -315,6 +332,13 @@ function check_math_answer( $commentdata ){
 		
 		//Problem solved, so destroy the uniqueid	
 		unset( $_SESSION[$uniqueid] );
+
+	}else if( $comment_type == 'trackback' ) { //Check trackback spams
+		$parsedUrl = parse_url( $_POST['url'] );
+
+		if( !checkDNSValidity( $parsedUrl['host'], $_SERVER['REMOTE_ADDR'] ) ) {
+			wp_die( __( 'Source IP and url are not matched.', 'mathquiz' ) );
+		}
 	}
 	
 	return $commentdata;
