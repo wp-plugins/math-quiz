@@ -118,7 +118,7 @@ function math_setting_page(){
 	</form>
 </div>
 <script type="text/javascript">
-$(function() {
+(function($) {
     $('#quiz-css').change(function(){
         $('.quiz-css-content').hide();
         $('#' + $(this).val()).show();
@@ -127,7 +127,7 @@ $(function() {
         $('.custom-position').hide();
         $('#' + $(this).val()).show();
     });
-});
+})(jQuery);
 </script>
 <?php
 } //math_setting_page ends here

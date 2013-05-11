@@ -44,6 +44,7 @@ Freetype, a text renderer, keeps the font file handle open, causing Windows and 
 
 = 1.0 =
 * Add DNS check for trackback spams.
+* Fix admin panel JS error
 
 = 0.9 =
 * Enhance the problem complexity to avoid OCRs.
@@ -81,6 +82,7 @@ Freetype, a text renderer, keeps the font file handle open, causing Windows and 
 
 = 1.0 =
 Add DNS check for trackback spams.
+Fix admin panel JS error.
 
 = 0.9 =
 Enhance the problem complexity to avoid OCRs.
