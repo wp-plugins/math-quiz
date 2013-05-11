@@ -169,13 +169,13 @@ function checkDNSValidity($host, $ip){
 	$dnsV4 = dns_get_record($host, DNS_A);
 	$dnsV6 = dns_get_record($host, DNS_AAAA);
 
-	for($i = 0; $i < count($dnsV4); $i++){
-		if( $dnsV4[$i]['ip'] == $ip )
+	foreach ($dnsV4 as $record) {
+		if( $record['ip'] == $ip )
 			return true;
 	}
 
-	for($i = 0; $i < count($dnsV6); $i++){
-		if( $dnsV6[$i]['ip'] == $ip )
+	foreach ($dnsV6 as $record) {
+		if( $record['ip'] == $ip )
 			return true;
 	}
 
