@@ -21,6 +21,7 @@ Features:
 *   Dynamic problems prevent spam robots from posting unwanted content.
 *   Quiz form inserted using AJAX for better compatibility with HTML cache plugins.
 *   Form style and position can be fully customized in the control panel.
+*   Trackbacks are checked with DNS queries to avoid abuse.
 
 == Installation ==
 
