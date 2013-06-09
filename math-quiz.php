@@ -3,7 +3,7 @@
 Plugin Name: Math Quiz
 Plugin URI: http://wordpress.org/extend/plugins/math-quiz/
 Description: Generating random math problem for comment form.
-Version: 1.0
+Version: 1.1
 Author: ATI
 Author URI: http://atifans.net/
 License: GPL2 or later
@@ -118,11 +118,26 @@ function get_quiz_form(){
 }
 
 //Fire the session
-function prepareSession(){
+function prepareSession($old_sessid = ''){
 	$siteurl = parse_url( site_url() );
 	session_set_cookie_params(0, $siteurl['path']);
 	session_name('nyan-q');
+	if (!check_sessionid($old_sessid)) {
+		list( , , $newid) = number_engine();
+		session_id($newid);
+	}
 	session_start();
+}
+
+function check_sessionid($old_sessid = '')
+{
+	if (!empty($old_sessid)) {
+		if (!preg_match('/^[a-zA-Z0-9]+$/', $sessid)) {
+			return false;
+		}
+	}
+	
+	return true;
 }
 
 //Base64 picture generator
@@ -199,7 +214,7 @@ function get_math_problem( $mode ){
 			header('Access-Control-Allow-Origin: ' . home_url() );
 			
 			//Start session
-			prepareSession();
+			prepareSession($_COOKIE['nyan-q']);
 			
 			//Get things from the number engine
 			list($problem, $answer, $uniqueid) = number_engine();
@@ -311,10 +326,8 @@ function check_math_answer( $commentdata ){
 		$comment_type != 'pingback' &&
 		$comment_type != 'trackback' ) {
 		
-		//Resume session
-		session_id($_POST['nyan-q']);
-		//Start session
-		prepareSession();
+		//Start/Resume session
+		prepareSession($_POST['nyan-q']);
 		
 		//Use the uniqueid to get generated problem
 		$uniqueid = $_POST['uniqueid'];
