@@ -1,14 +1,14 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: math-quiz\n"
-"POT-Creation-Date: 2013-03-19 20:17+0800\n"
-"PO-Revision-Date: 2013-03-19 20:17+0800\n"
+"POT-Creation-Date: 2013-06-11 12:19+0800\n"
+"PO-Revision-Date: 2013-06-11 12:21+0800\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.5.4\n"
+"X-Generator: Poedit 1.5.5\n"
 "X-Poedit-KeywordsList: __;_e\n"
 "X-Poedit-Basepath: .\n"
 "X-Poedit-SearchPath-0: C:\\math-quiz\\trunk\n"
@@ -99,22 +99,30 @@ msgstr "表單設定模式"
 msgid "Quiz Insert Method"
 msgstr "測驗表單置入"
 
-#: C:\math-quiz\trunk/math-quiz.php:195
+#: C:\math-quiz\trunk/math-quiz.php:126
+msgid "Invalid session id, please clear your browser cookie and try again."
+msgstr "不正確的Session ID，請清除瀏覽器Cookie後再試。"
+
+#: C:\math-quiz\trunk/math-quiz.php:253
 msgid "Solve the problem: "
 msgstr "解題："
 
-#: C:\math-quiz\trunk/math-quiz.php:195
+#: C:\math-quiz\trunk/math-quiz.php:254
 msgid "Refresh Quiz"
 msgstr "換個問題"
 
-#: C:\math-quiz\trunk/math-quiz.php:295
+#: C:\math-quiz\trunk/math-quiz.php:353
 msgid ""
 "You failed to answer the question. Please go back and try another problem."
 msgstr "無法驗證你的答案，請換個題目再重試。"
 
-#: C:\math-quiz\trunk/math-quiz.php:301
+#: C:\math-quiz\trunk/math-quiz.php:359
 msgid "The answer is incorrect.  Please go back and try another problem."
 msgstr "答案不正確，請換個題目再重試。"
+
+#: C:\math-quiz\trunk/math-quiz.php:369
+msgid "Source IP and url are not matched."
+msgstr "來源IP與URL不相符。"
 
 #~ msgid "Quiz Color Customization"
 #~ msgstr "測驗圖片顏色客製化"

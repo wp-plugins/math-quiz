@@ -3,7 +3,7 @@
 Plugin Name: Math Quiz
 Plugin URI: http://wordpress.org/extend/plugins/math-quiz/
 Description: Generating random math problem for comment form.
-Version: 1.1
+Version: 1.2
 Author: ATI
 Author URI: http://atifans.net/
 License: GPL2 or later
@@ -118,22 +118,38 @@ function get_quiz_form(){
 }
 
 //Fire the session
-function prepareSession($old_sessid = ''){
+function prepareSession($sessid = ''){
 	$siteurl = parse_url( site_url() );
 	session_set_cookie_params(0, $siteurl['path']);
 	session_name('nyan-q');
-	if (!check_sessionid($old_sessid)) {
-		list( , , $newid) = number_engine();
-		session_id($newid);
+	if (!check_sessionid($sessid)) {
+		_e( 'Invalid session id, please clear your browser cookie and try again.', 'mathquiz' );
+		die();
 	}
 	session_start();
 }
 
-function check_sessionid($old_sessid = '')
+function check_sessionid($sessid = '')
 {
-	if (!empty($old_sessid)) {
-		if (!preg_match('/^[a-zA-Z0-9]+$/', $sessid)) {
-			return false;
+	$avachar = ini_get('session.hash_bits_per_character');
+
+	if (!empty($sessid)) {
+		if ($avachar == 4) {
+			if (!preg_match('/^[a-f0-9]{32,40}$/', $sessid)) {
+				return false;
+			}
+		} else if ($avachar == 5) {
+			if (!preg_match('/^[a-v0-9]{25,32}$/', $sessid)) {
+				return false;
+			}
+		} else if ($avachar == 6) {
+			if (!preg_match('/^[a-zA-Z0-9,-]{21,27}$/', $sessid)) {
+				return false;
+			}
+		} else {
+			if (!preg_match('/^[a-zA-Z0-9,-]{21,40}$/', $sessid)) {
+				return false;
+			}
 		}
 	}
 	
