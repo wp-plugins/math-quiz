@@ -113,6 +113,25 @@ function math_setting_page(){
 				</div>
 				</td>
 			</tr>
+			<tr valign="top">
+				<th scope="row"><label for="quiz-type"><?php _e('Quiz Type', 'math-quiz'); ?></label></th>
+				<td>
+				<select name="quiz-type" id="quiz-type">
+					<?php
+						$quizTYPE = array(
+						'pic' => __('Picture', 'math-quiz'),
+						'test' => __('Text', 'math-quiz')
+						);
+						while( $key = current($quizTYPE) ){
+							echo '<option value="'. key($quizTYPE) .'"';
+							if( key($quizTYPE) == $quiz_setting['quiz-type'] ) echo ' selected="selected"';
+							echo '>'. $key .'</option>';
+							next($quizTYPE);
+						}
+					?>
+				</select>
+				</td>
+			</tr>
 		</table>
 		<p class="submit"><input type="submit" name="submit" id="submit" class="button button-primary" value="<?php _e('Save Changes', 'math-quiz'); ?>"  /></p>
 	</form>
@@ -176,10 +195,19 @@ function save_setting(){
 			if(strlen($setting_error) > 0) $setting_error .= ', ';
 			$setting_error .= __('Quiz Insert Method', 'math-quiz');
 		}
+
+		//Check quiz-type
+		if( $_POST['quiz-type'] == 'pic' ||
+			$_POST['quiz-type'] == 'test'
+			){
+			$quiz_setting['quiz-type'] = $_POST['quiz-type'];
+		}else{
+			if(strlen($setting_error) > 0) $setting_error .= ', ';
+			$setting_error .= __('Quiz Type', 'math-quiz');
+		}
 		
 		update_option( 'math-quiz-setting', stripslashes_deep($quiz_setting) );
 	}
 	
 	return $setting_error;
 }
-?>

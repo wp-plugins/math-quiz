@@ -10,7 +10,7 @@ License: GPL2 or later
 */
 
 //Define constants
-define('SETTING_VERSION', '2.7');
+define('SETTING_VERSION', '2.8');
 
 //Make sure the plugin is not called outside WP
 if ( !function_exists( 'add_action' ) ) {
@@ -62,7 +62,7 @@ add_action('init', 'start_math_engine');
 //***************************************//
 
 //Random number generator
-function number_engine(){
+function number_engine($quiz_type = 'pic'){
 	//Random string generator
     $characters = "0123456789abcdefghijklmnopqrstuvwxyz";
 	$uniqueid = '';
@@ -82,7 +82,9 @@ function number_engine(){
 		$answer = $num1 - $num2;
 	}
 	
-	$problem = pictureGenerator( $problem );
+	if ($quiz_type == 'pic') {
+		$problem = pictureGenerator( $problem );
+	}
 	
 	return array($problem, $answer, $uniqueid);
 }
@@ -95,6 +97,7 @@ function update_setting(){
 		'quiz-position-selector' => 'default',
 		'quiz-position' => 'submit',
 		'quiz-ajax' => 'after',
+		'quiz-type' => 'pic',
 		'setting_version' => SETTING_VERSION
 	);
 	
@@ -113,8 +116,12 @@ function update_setting(){
 }
 
 //Fixed quiz form
-function get_quiz_form(){
-	return '<p id="mathquiz"><label for="mathquiz">%problemlabel%<img src="data:image/jpeg;base64,%problem%"></label> <input name="math-quiz" type="text" /> <a id="refresh-mathquiz" href="javascript:void(0)">%reloadbutton%</a><input type="hidden" name="uniqueid" value="%uniqueid%" /><input type="hidden" name="nyan-q" value="%sessionid%" /></p>';
+function get_quiz_form($quiz_type = 'pic'){
+	$output = '<p id="mathquiz"><label for="mathquiz">%problemlabel%';
+	$output .= ($quiz_type == 'pic') ? '<img src="data:image/jpeg;base64,%problem%">' : '%problem%';
+	$output .= '</label>&nbsp;<input name="math-quiz" type="text" />&nbsp;<a id="refresh-mathquiz" href="javascript:void(0)">%reloadbutton%</a><input type="hidden" name="uniqueid" value="%uniqueid%" /><input type="hidden" name="nyan-q" value="%sessionid%" /></p>';
+
+	return $output;
 }
 
 //Fire the session
@@ -233,7 +240,8 @@ function get_math_problem( $mode ){
 			prepareSession($_COOKIE['nyan-q']);
 			
 			//Get things from the number engine
-			list($problem, $answer, $uniqueid) = number_engine();
+			$quiz_setting = get_option('math-quiz-setting');
+			list($problem, $answer, $uniqueid) = number_engine($quiz_setting['quiz-type']);
 			
 			//Store them into session data
 			$_SESSION[$uniqueid]['answer'] = $answer;
@@ -253,7 +261,7 @@ function get_math_problem( $mode ){
 				__('Solve the problem: ', 'math-quiz'), 
 				__('Refresh Quiz', 'math-quiz')
 			);
-			$fireworks = str_replace( $stringToBeReplace, $stringToReplace, get_quiz_form() );
+			$fireworks = str_replace( $stringToBeReplace, $stringToReplace, get_quiz_form($quiz_setting['quiz-type']) );
 			
 			echo $fireworks;
 			

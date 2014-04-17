@@ -3,7 +3,7 @@ Contributors: atitan
 Donate link: 
 Tags: comments, spam, captcha
 Requires at least: 3.0
-Tested up to: 3.8
+Tested up to: 3.9
 Stable tag: 1.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -42,6 +42,9 @@ Install this plugin is easy.
 Freetype, a text renderer, keeps the font file handle open, causing Windows and other OS to lock the font file. Deactivate the plugin before you update it.
 
 == Changelog ==
+
+= 1.3 =
+* Add legacy text mode for those don't like the picture.
 
 = 1.2 =
 * Fix sessionid check that cause visitors unable to answer.
@@ -86,6 +89,9 @@ Freetype, a text renderer, keeps the font file handle open, causing Windows and 
 * Initial release.
 
 == Upgrade Notice ==
+
+= 1.3 =
+Add legacy text mode.
 
 = 1.2 =
 Fix sessionid check that cause visitors unable to answer.
