@@ -1,0 +1,184 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: math-quiz\n"
+"POT-Creation-Date: 2014-04-17 16:18+0800\n"
+"PO-Revision-Date: 2014-04-17 16:20+0800\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: zh_TW\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.6.4\n"
+"X-Poedit-KeywordsList: __;_e\n"
+"X-Poedit-Basepath: .\n"
+"X-Poedit-SearchPath-0: C:\\mathquiz\\trunk\n"
+
+#: C:\mathquiz\trunk/admin.php:28
+msgid "Math Quiz"
+msgstr "Math Quiz - 數學測驗留言驗證"
+
+#: C:\mathquiz\trunk/admin.php:36
+msgid "The following settings is invalid, please try again. <br />"
+msgstr "以下選項設定錯誤，請再試看看。 <br />"
+
+#: C:\mathquiz\trunk/admin.php:39
+msgid "Setting saved."
+msgstr "設定已儲存。"
+
+#: C:\mathquiz\trunk/admin.php:50
+msgid "Quiz Form"
+msgstr "測驗表單"
+
+#: C:\mathquiz\trunk/admin.php:53
+msgid "This is how your quiz form will look like, customize it using CSS!"
+msgstr "這是測驗表單的形式，請用CSS來修改他的樣式。"
+
+#: C:\mathquiz\trunk/admin.php:57
+msgid "Quiz Form Customization"
+msgstr "測驗表單客製化"
+
+#: C:\mathquiz\trunk/admin.php:62
+msgid "Use theme CSS"
+msgstr "使用佈景主題的CSS"
+
+#: C:\mathquiz\trunk/admin.php:63
+msgid "Customize it here"
+msgstr "在這裡修改CSS樣式"
+
+#: C:\mathquiz\trunk/admin.php:74
+msgid "It's recommended to use theme CSS."
+msgstr "推薦使用佈景主題主題的CSS。"
+
+#: C:\mathquiz\trunk/admin.php:78 C:\mathquiz\trunk/admin.php:186
+msgid "Quiz Position"
+msgstr "測驗表單位置"
+
+#: C:\mathquiz\trunk/admin.php:83
+msgid "Use default position"
+msgstr "使用預設位置"
+
+#: C:\mathquiz\trunk/admin.php:84
+msgid "Customize it yourself"
+msgstr "自訂位置"
+
+#: C:\mathquiz\trunk/admin.php:98
+msgid "Insert before"
+msgstr "前置於"
+
+#: C:\mathquiz\trunk/admin.php:99
+msgid "Insert into"
+msgstr "置入於"
+
+#: C:\mathquiz\trunk/admin.php:100
+msgid "Insert after"
+msgstr "後置於"
+
+#: C:\mathquiz\trunk/admin.php:110
+msgid "the HTML element id: "
+msgstr "HTML元素ID："
+
+#: C:\mathquiz\trunk/admin.php:112
+msgid ""
+"Please enter the \"HTML element id\" where you want to insert the quiz form, "
+"and choose a insert method."
+msgstr "請輸入你想要插入測驗表單的「HTML元素ID」，並選擇如何置入。"
+
+#: C:\mathquiz\trunk/admin.php:117 C:\mathquiz\trunk/admin.php:206
+msgid "Quiz Type"
+msgstr "測驗類型"
+
+#: C:\mathquiz\trunk/admin.php:122
+msgid "Picture"
+msgstr "圖片模式"
+
+#: C:\mathquiz\trunk/admin.php:123
+msgid "Text"
+msgstr "文字模式"
+
+#: C:\mathquiz\trunk/admin.php:136
+msgid "Save Changes"
+msgstr "儲存設定"
+
+#: C:\mathquiz\trunk/admin.php:168
+msgid "Quiz Customization"
+msgstr "測驗表單客製化"
+
+#: C:\mathquiz\trunk/admin.php:178
+msgid "Quiz Position Type Selector"
+msgstr "表單設定模式"
+
+#: C:\mathquiz\trunk/admin.php:196
+msgid "Quiz Insert Method"
+msgstr "測驗表單置入"
+
+#: C:\mathquiz\trunk/math-quiz.php:133
+msgid "Invalid session id, please clear your browser cookie and try again."
+msgstr "不正確的Session ID，請清除瀏覽器Cookie後再試。"
+
+#: C:\mathquiz\trunk/math-quiz.php:261
+msgid "Solve the problem: "
+msgstr "解題："
+
+#: C:\mathquiz\trunk/math-quiz.php:262
+msgid "Refresh Quiz"
+msgstr "換個問題"
+
+#: C:\mathquiz\trunk/math-quiz.php:361
+msgid ""
+"You failed to answer the question. Please go back and try another problem."
+msgstr "無法驗證你的答案，請換個題目再重試。"
+
+#: C:\mathquiz\trunk/math-quiz.php:367
+msgid "The answer is incorrect.  Please go back and try another problem."
+msgstr "答案不正確，請換個題目再重試。"
+
+#: C:\mathquiz\trunk/math-quiz.php:377
+msgid "Source IP and url are not matched."
+msgstr "來源IP與URL不相符。"
+
+#~ msgid "Quiz Color Customization"
+#~ msgstr "測驗圖片顏色客製化"
+
+#~ msgid "Background color in RGB(0~255): "
+#~ msgstr "背景顏色RGB(0~255)："
+
+#~ msgid "Text color in RGB(0~255): "
+#~ msgstr "文字顏色RGB(0~255)："
+
+#~ msgid "Choose the color you want!"
+#~ msgstr "選擇你想要的顏色！"
+
+#~ msgid "Summation"
+#~ msgstr "加法"
+
+#~ msgid "Subtraction"
+#~ msgstr "減法"
+
+#~ msgid "Multiplication"
+#~ msgstr "乘法"
+
+#~ msgid "Square root"
+#~ msgstr "根號"
+
+#~ msgid "Exponentiation"
+#~ msgstr "指數"
+
+#~ msgid "Choose your favorite quiz type!"
+#~ msgstr "選擇你想要的測驗類型！"
+
+#~ msgid ""
+#~ "&#37;problem&#37;, &#37;uniqueid&#37;, &#37;fieldname&#37; are the "
+#~ "preserved strings that should never be removed."
+#~ msgstr ""
+#~ "「&#37;problem&#37;、&#37;uniqueid&#37;、&#37;fieldname&#37;」皆為保留字"
+#~ "串，請勿移除。"
+
+#~ msgid "However, &#37;reloadbutton&#37; is up to you."
+#~ msgstr "但 &#37;reloadbutton&#37; 要不要保留則是取決於你。"
+
+#~ msgid "Before"
+#~ msgstr "前置於"
+
+#~ msgid "After"
+#~ msgstr "後置於"
