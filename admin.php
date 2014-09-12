@@ -49,7 +49,7 @@ function math_setting_page(){
 			<tr valign="top">
 				<th scope="row"><label for="quiz-form"><?php _e('Quiz Form', 'math-quiz'); ?></label></th>
 				<td>
-				<textarea id="quiz-form" class="code disabled" disabled="disabled" cols="80" rows="5"><?php echo get_quiz_form(); ?></textarea>
+				<textarea id="quiz-form" class="code disabled" disabled="disabled" cols="80" rows="5"><?php echo get_quiz_form($quiz_setting['quiz-type']); ?></textarea>
 				<p class="description"><?php _e('This is how your quiz form will look like, customize it using CSS!', 'math-quiz'); ?></p>
 				</td>
 			</tr>
