@@ -3,7 +3,7 @@
 Plugin Name: Math Quiz
 Plugin URI: http://wordpress.org/extend/plugins/math-quiz/
 Description: Generating random math problem for comment form.
-Version: 1.5
+Version: 1.6
 Author: ATI
 Author URI: http://atifans.net/
 License: GPL2 or later
@@ -126,16 +126,21 @@ function get_quiz_form($quiz_type = 'pic'){
 
 //Fire the session
 function prepareSession($sessid = ''){
+	if ( session_id() === $sessid ) {
+		return;
+	}
+
 	$siteurl = parse_url( site_url() );
 	session_set_cookie_params(0, $siteurl['path'], $siteurl['host'], false, true);
 	session_name('nyan-q');
-	if (!check_sessionid($sessid)) {
+	if ( !reseume_session($sessid) ) {
 		wp_die( __( 'Invalid session id, please clear your browser cookie and try again.', 'mathquiz' ) );
 	}
+	ob_start();
 	session_start();
 }
 
-function check_sessionid($sessid = '')
+function reseume_session($sessid = '')
 {
 	$avachar = ini_get('session.hash_bits_per_character');
 
@@ -157,6 +162,7 @@ function check_sessionid($sessid = '')
 				return false;
 			}
 		}
+		session_id($sessid);
 	}
 	
 	return true;

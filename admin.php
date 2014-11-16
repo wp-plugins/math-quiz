@@ -152,62 +152,64 @@ function math_setting_page(){
 } //math_setting_page ends here
 
 function save_setting(){
-	if ( check_admin_referer( 'math-quiz-control-panel' ) ) {
-		//Get quiz setting
-		$quiz_setting = get_option('math-quiz-setting');
-		
-		$setting_error = '';
-		
-		//Check quiz-css
-		if( $_POST['quiz-css'] == 'theme' ){
-			$quiz_setting['quiz-css'] = 'theme';
-		}else if( $_POST['quiz-css'] == 'plugin' ){
-			$quiz_setting['quiz-css'] = 'plugin';
-			$quiz_setting['quiz-css-content'] = $_POST['quiz-css-content'];
-		}else{
-			$setting_error .= __('Quiz Customization', 'math-quiz');
-		}
-		
-		//Check quiz-position-selector
-		if( $_POST['quiz-position-selector'] == 'default' ||
-			$_POST['quiz-position-selector'] == 'custom' 
-			){
-			$quiz_setting['quiz-position-selector'] = $_POST['quiz-position-selector'];
-		}else{
-			if(strlen($setting_error) > 0) $setting_error .= ', ';
-			$setting_error .= __('Quiz Position Type Selector', 'math-quiz');
-		}
-		
-		//Check quiz-position
-		if( preg_match("/^[:A-Z_a-z]?[:A-Z_a-z-.0-9]*/", $_POST['quiz-position']) ){
-			$quiz_setting['quiz-position'] = $_POST['quiz-position'];
-		}else{
-			if(strlen($setting_error) > 0) $setting_error .= ', ';
-			$setting_error .= __('Quiz Position', 'math-quiz');
-		}
-		
-		//Check quiz-ajax
-		if( $_POST['quiz-ajax'] == 'before' ||
-			$_POST['quiz-ajax'] == 'after'
-			){
-			$quiz_setting['quiz-ajax'] = $_POST['quiz-ajax'];
-		}else{
-			if(strlen($setting_error) > 0) $setting_error .= ', ';
-			$setting_error .= __('Quiz Insert Method', 'math-quiz');
-		}
-
-		//Check quiz-type
-		if( $_POST['quiz-type'] == 'pic' ||
-			$_POST['quiz-type'] == 'test'
-			){
-			$quiz_setting['quiz-type'] = $_POST['quiz-type'];
-		}else{
-			if(strlen($setting_error) > 0) $setting_error .= ', ';
-			$setting_error .= __('Quiz Type', 'math-quiz');
-		}
-		
-		update_option( 'math-quiz-setting', stripslashes_deep($quiz_setting) );
+	if ( !check_admin_referer( 'math-quiz-control-panel' ) ) {
+		return;
 	}
+
+	//Get quiz setting
+	$quiz_setting = get_option('math-quiz-setting');
+		
+	$setting_error = '';
+		
+	//Check quiz-css
+	if( $_POST['quiz-css'] == 'theme' ){
+		$quiz_setting['quiz-css'] = 'theme';
+	}else if( $_POST['quiz-css'] == 'plugin' ){
+		$quiz_setting['quiz-css'] = 'plugin';
+		$quiz_setting['quiz-css-content'] = $_POST['quiz-css-content'];
+	}else{
+		$setting_error .= __('Quiz Customization', 'math-quiz');
+	}
+		
+	//Check quiz-position-selector
+	if( $_POST['quiz-position-selector'] == 'default' ||
+		$_POST['quiz-position-selector'] == 'custom' 
+		){
+		$quiz_setting['quiz-position-selector'] = $_POST['quiz-position-selector'];
+	}else{
+		if(strlen($setting_error) > 0) $setting_error .= ', ';
+		$setting_error .= __('Quiz Position Type Selector', 'math-quiz');
+	}
+		
+	//Check quiz-position
+	if( preg_match("/^[:A-Z_a-z]?[:A-Z_a-z-.0-9]*/", $_POST['quiz-position']) ){
+		$quiz_setting['quiz-position'] = $_POST['quiz-position'];
+	}else{
+		if(strlen($setting_error) > 0) $setting_error .= ', ';
+		$setting_error .= __('Quiz Position', 'math-quiz');
+	}
+		
+	//Check quiz-ajax
+	if( $_POST['quiz-ajax'] == 'before' ||
+		$_POST['quiz-ajax'] == 'after'
+		){
+		$quiz_setting['quiz-ajax'] = $_POST['quiz-ajax'];
+	}else{
+		if(strlen($setting_error) > 0) $setting_error .= ', ';
+		$setting_error .= __('Quiz Insert Method', 'math-quiz');
+	}
+
+	//Check quiz-type
+	if( $_POST['quiz-type'] == 'pic' ||
+		$_POST['quiz-type'] == 'test'
+		){
+		$quiz_setting['quiz-type'] = $_POST['quiz-type'];
+	}else{
+		if(strlen($setting_error) > 0) $setting_error .= ', ';
+		$setting_error .= __('Quiz Type', 'math-quiz');
+	}
+		
+	update_option( 'math-quiz-setting', stripslashes_deep($quiz_setting) );
 	
 	return $setting_error;
 }
